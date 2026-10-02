@@ -94,6 +94,20 @@ npx @google/clasp login
 
 Le script lié est créé et déployé ; recharger le classeur fait apparaître le menu.
 
+### Kanban GitHub (GitHub Projects)
+
+Le classeur a un onglet `Kanban` ; pour un vrai tableau GitHub Projects (v2), avec
+glisser-déposer et champ Statut :
+
+```bash
+.venv/bin/python github_project.py        # lit github_repo de config.json
+```
+
+Crée (ou réutilise) un projet, y ajoute toutes les issues du dépôt et règle le
+champ Statut depuis les labels `statut:*` (à faire → Todo, en cours → In Progress,
+fait/remplacé → Done). Options : `--repo`, `--owner`, `--title`, `--dry-run`.
+Nécessite `gh` authentifié (scope `project`).
+
 ## Structure
 
 ```
@@ -105,6 +119,7 @@ sheets.py               habillage et remplissage du classeur
 sync_back.py            classeur -> backlog.json + DECISIONS.md
 notify.py               relances
 export_pdf.py           revue PDF
+github_project.py       tableau GitHub Projects (kanban) depuis les issues
 form_app.py             formulaire local (optionnel)
 create_form.py          Google Form (optionnel)
 install_apps_script.py  diagnostic (compte de service)

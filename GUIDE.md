@@ -240,6 +240,28 @@ Pour planifier les relances, ajoutez une tâche cron :
 0 8 * * 1 cd /chemin/TicketsGoogleSheet && .venv/bin/python notify.py >> notify.log 2>&1
 ```
 
+## 12 bis. Kanban GitHub (GitHub Projects)
+
+Le classeur a un onglet `Kanban` (lecture seule). Pour un vrai tableau GitHub
+Projects (v2), avec glisser-déposer et champ Statut synchronisé depuis les labels :
+
+```bash
+.venv/bin/python github_project.py
+```
+
+Le script lit `github_repo` de `config.json`, crée (ou réutilise) un projet,
+y ajoute toutes les issues et règle le champ `Status` :
+
+| Label | Colonne GitHub |
+|---|---|
+| `statut:à faire` | Todo |
+| `statut:en cours` | In Progress |
+| `statut:fait` | Done |
+| `statut:remplacé` | Done |
+
+Options : `--repo owner/name`, `--owner`, `--title`, `--dry-run`. Nécessite `gh`
+authentifié avec le scope `project` (`gh auth status`).
+
 ## 13. Intégrations (GSD, gstack, Matt Pocock)
 
 Le parser lit une **convention** configurable, et l'agent `backlog-architect`
@@ -285,6 +307,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python sync_back.py     # classeur -> dépôt (backlog.json, DECISIONS.md)
 .venv/bin/python notify.py        # relances
 .venv/bin/python export_pdf.py    # revue PDF
+.venv/bin/python github_project.py # tableau GitHub Projects (kanban)
 
 # Formulaires Apps Script
 npx @google/clasp login
