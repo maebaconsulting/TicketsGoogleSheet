@@ -20,6 +20,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 
 import config
 
@@ -174,6 +175,7 @@ def main() -> None:
         )
         if code != 0:
             print(f"  échec statut {url} : {out[:120]}")
+        time.sleep(0.2)  # respecte la cadence de l'API
 
     print(f"Tableau : {project.get('url', '')}")
     if args.dry_run:

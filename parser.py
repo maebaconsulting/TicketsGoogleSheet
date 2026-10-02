@@ -673,6 +673,7 @@ def main() -> None:
             f'gh issue create --repo "$REPO" --title "{title}" '
             f'--body-file "$DIR/bodies/{t["id"]}.md" --label "{labels}" --milestone "{t["milestone"]}"'
         )
+        gh.append("sleep 1  # respecte la limite de cadence GitHub")
     (OUT_DIR / "github-issues.sh").write_text("\n".join(gh) + "\n", encoding="utf-8")
 
     # GitLab : NDJSON pour l'API + script glab
