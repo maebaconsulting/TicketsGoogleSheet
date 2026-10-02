@@ -250,6 +250,7 @@ Projects (v2), avec glisser-déposer et champ Statut synchronisé depuis les lab
 ```
 
 Le script lit `github_repo` de `config.json`, crée (ou réutilise) un projet,
+**le rattache au dépôt** (il apparaît alors dans l'onglet Projects du dépôt),
 y ajoute toutes les issues et règle le champ `Status` :
 
 | Label | Colonne GitHub |
@@ -259,8 +260,11 @@ y ajoute toutes les issues et règle le champ `Status` :
 | `statut:fait` | Done |
 | `statut:remplacé` | Done |
 
-Options : `--repo owner/name`, `--owner`, `--title`, `--dry-run`. Nécessite `gh`
-authentifié avec le scope `project` (`gh auth status`).
+Options : `--repo owner/name`, `--owner`, `--title`, `--dry-run`, `--no-link`.
+Nécessite `gh` authentifié avec le scope `project` (`gh auth status`).
+
+GitHub indexe les éléments avec quelques dizaines de secondes de retard : le
+tableau peut paraître vide juste après la commande, puis se remplir.
 
 ## 13. Intégrations (GSD, gstack, Matt Pocock)
 

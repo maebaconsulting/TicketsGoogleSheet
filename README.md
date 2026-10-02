@@ -103,10 +103,14 @@ glisser-déposer et champ Statut :
 .venv/bin/python github_project.py        # lit github_repo de config.json
 ```
 
-Crée (ou réutilise) un projet, y ajoute toutes les issues du dépôt et règle le
-champ Statut depuis les labels `statut:*` (à faire → Todo, en cours → In Progress,
-fait/remplacé → Done). Options : `--repo`, `--owner`, `--title`, `--dry-run`.
-Nécessite `gh` authentifié (scope `project`).
+Crée (ou réutilise) un projet, **le rattache au dépôt** (onglet Projects du
+dépôt), y ajoute toutes les issues et règle le champ Statut depuis les labels
+`statut:*` (à faire → Todo, en cours → In Progress, fait/remplacé → Done).
+Options : `--repo`, `--owner`, `--title`, `--dry-run`, `--no-link`. Nécessite
+`gh` authentifié (scope `project`).
+
+Après l'ajout, GitHub indexe les éléments en quelques dizaines de secondes :
+le tableau peut afficher 0 élément juste après la commande, puis se remplir.
 
 ## Structure
 

@@ -80,6 +80,26 @@ def existing_items(owner: str, number: int) -> dict[str, str]:
     return mapping
 
 
+def link_repository(project_id: str, repo: str) -> None:
+    """Rattache le projet au dépôt pour qu'il apparaisse dans l'onglet Projects."""
+    code, out = gh("api", f"repos/{repo}", "--jq", ".node_id")
+    if code != 0:
+        print(f"  rattachement ignoré (dépôt introuvable) : {out[:120]}")
+        return
+    repo_id = out.strip()
+    code, out = gh(
+        "api", "graphql",
+        "-f", "query=mutation($p: ID!, $r: ID!) {"
+        " linkProjectV2ToRepository(input: {projectId: $p, repositoryId: $r}) {"
+        " repository { id } } }",
+        "-f", f"p={project_id}", "-f", f"r={repo_id}",
+    )
+    if code == 0:
+        print(f"Projet rattaché au dépôt {repo} (onglet Projects).")
+    else:
+        print(f"  rattachement au dépôt impossible : {out[:160]}")
+
+
 def label_status(labels: list[dict]) -> str:
     for label in labels:
         name = label.get("name", "")
@@ -95,6 +115,8 @@ def main() -> None:
     parser.add_argument("--owner", default="")
     parser.add_argument("--title", default=f"{cfg['product_name']} backlog")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--no-link", action="store_true",
+                        help="ne pas rattacher le projet au dépôt")
     args = parser.parse_args()
 
     if not args.repo or "/" not in args.repo:
@@ -115,6 +137,9 @@ def main() -> None:
         if not project:
             raise SystemExit("Projet introuvable après création.")
         number, project_id = project["number"], project["id"]
+
+    if not args.no_link and not args.dry_run:
+        link_repository(project_id, args.repo)
 
     field_id, options = status_field(owner, number)
     items = existing_items(owner, number)
