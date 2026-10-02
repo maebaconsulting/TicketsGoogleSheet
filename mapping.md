@@ -171,6 +171,7 @@ Classeur désigné par `spreadsheet_id`, ou découvert par `sheet_name`, partag�
 |---|---|
 | `Accueil` | titre, date de génération, cartes KPI (récits, tickets, livrés, à décider, en retard), navigation, légende |
 | `Récits métier` | 93 récits (35 manuels + 58 issus de l'analyse du code) ; colonnes éditables H à Q |
+| `Kanban` | tickets en colonnes par statut (À faire, En cours, Fait, Remplacé), vue type monday |
 | `Décisions` | trace des récits ayant un statut, une décision ou un validateur |
 | `Demandes` | recueil des besoins du métier (à remplir, ou via Google Form) |
 | `Tickets` | 167 tâches d'ingénierie (24 colonnes) avec leurs récits liés |

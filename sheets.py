@@ -41,6 +41,7 @@ SCOPES = [
 TABS = [
     "Accueil",
     "Récits métier",
+    "Kanban",
     "Décisions",
     "Demandes",
     "Tickets",
@@ -509,12 +510,13 @@ def filter_view(title, gid, rows, column, value) -> dict:
 # --- Page d'accueil -----------------------------------------------------------
 
 
-def build_home(ids, sep, generated) -> list[list[str]]:
+def build_home(ids, sep, generated):
+    """Lignes de l'accueil et repères de mise en forme (indices de lignes)."""
+
     def countif(sheet_column, value):
         return f'=COUNTIF({sheet_column}{sep}"{value}")'
 
-    nav = ["Accueil", "Récits métier", "Décisions", "Demandes", "Tickets",
-           "Plans", "Specs", "Référentiels", "Tableau de bord"]
+    nav = [name for name in TABS if name in ids]
     rows = [
         ["lama : backlog produit"],
         ["Récits métier et tickets d'ingénierie, générés depuis le dépôt. Travail collaboratif."],
@@ -531,79 +533,174 @@ def build_home(ids, sep, generated) -> list[list[str]]:
         [],
         ["Naviguer"],
     ]
+    nav_start = len(rows)
     for name in nav:
         rows.append([f'=HYPERLINK("#gid={ids[name]}"{sep}"{name}")'])
+    nav_end = len(rows)
+    rows.append([])
+    legend_header = len(rows)
+    legend_start = legend_header + 1
     rows += [
-        [],
         ["Légende des statuts"],
         ["Fait / Livré", "Travail terminé et fusionné."],
         ["En cours", "Travail commencé, non terminé."],
         ["À faire", "Identifié, pas encore commencé."],
         ["Remplacé / Refusé", "Hors périmètre ou remplacé."],
-        [],
+    ]
+    rows.append([])
+    notes_start = len(rows)
+    rows += [
         ["Colonnes éditables", "Récits métier : colonnes H à Q (Priorité, Statut, Décision, "
          "Porteur, Relecteur, Validateur, Échéance, Commentaire, Valeur, Effort). "
          "Score, Avancement et Alerte sont calculés. Vues filtrées : gérante, réception, "
          "praticienne, À décider, En retard."],
+        ["Kanban", "Onglet Kanban : les tickets par statut, en colonnes."],
         ["Demandes", "Onglet Demandes : recueillir un besoin du métier sans toucher au backlog."],
         ["Décisions", "Onglet Décisions : trace des récits ayant un statut, une décision ou un validateur."],
     ]
-    return rows
+    anchors = {
+        "nav_header": 7, "nav_start": nav_start, "nav_end": nav_end,
+        "legend_header": legend_header, "legend_start": legend_start,
+        "notes_start": notes_start, "notes_end": len(rows), "cols": 9,
+    }
+    return rows, anchors
 
 
-def format_home(gid, service_email) -> list[dict]:
+def format_home(gid, service_email, a) -> list[dict]:
     editors = [service_email] if service_email else []
+    cols = a["cols"]
     reqs = [
-        merge(gid, 0, 1, 0, 9),
-        merge(gid, 1, 2, 0, 9),
-        merge(gid, 2, 3, 0, 9),
-        merge(gid, 7, 8, 0, 9),
-        merge(gid, 9, 10, 0, 9),
-        merge(gid, 15, 16, 0, 9),
-        merge(gid, 19, 20, 0, 9),
-        repeat(gid, 0, 1, 0, 9,
+        merge(gid, 0, 1, 0, cols),
+        merge(gid, 1, 2, 0, cols),
+        merge(gid, 2, 3, 0, cols),
+        merge(gid, a["nav_header"], a["nav_header"] + 1, 0, cols),
+        merge(gid, a["legend_header"], a["legend_header"] + 1, 0, cols),
+        repeat(gid, 0, 1, 0, cols,
                {"backgroundColor": rgb(INK), "textFormat": {"bold": True, "foregroundColor": rgb(WHITE), "fontSize": 20}},
                "backgroundColor,textFormat"),
         row_height(gid, 0, 48),
-        repeat(gid, 1, 3, 0, 9,
+        repeat(gid, 1, 3, 0, cols,
                {"textFormat": {"foregroundColor": rgb(GREY), "fontSize": 10, "italic": True}},
                "textFormat"),
-        repeat(gid, 4, 5, 0, 9,
+        repeat(gid, 4, 5, 0, cols,
                {"textFormat": {"bold": True, "foregroundColor": rgb(GREY), "fontSize": 10}},
                "textFormat"),
-        repeat(gid, 5, 6, 0, 9,
+        repeat(gid, 5, 6, 0, cols,
                {"textFormat": {"bold": True, "foregroundColor": rgb(INK), "fontSize": 22},
                 "horizontalAlignment": "LEFT", "verticalAlignment": "MIDDLE"},
                "textFormat,horizontalAlignment,verticalAlignment"),
-        repeat(gid, 7, 8, 0, 9,
+        repeat(gid, a["nav_header"], a["nav_header"] + 1, 0, cols,
                {"backgroundColor": rgb(INK), "textFormat": {"bold": True, "foregroundColor": rgb(WHITE), "fontSize": 11}},
                "backgroundColor,textFormat"),
-        repeat(gid, 8, 17, 0, 9,
+        repeat(gid, a["nav_start"], a["nav_end"], 0, cols,
                {"textFormat": {"bold": True, "foregroundColor": rgb(LINK), "fontSize": 11},
                 "verticalAlignment": "MIDDLE"},
                "textFormat,verticalAlignment"),
-        repeat(gid, 9, 10, 0, 9,
+        repeat(gid, a["legend_header"], a["legend_header"] + 1, 0, cols,
                {"backgroundColor": rgb(INK), "textFormat": {"bold": True, "foregroundColor": rgb(WHITE), "fontSize": 11}},
                "backgroundColor,textFormat"),
-        repeat(gid, 15, 16, 0, 9,
-               {"backgroundColor": rgb(INK), "textFormat": {"bold": True, "foregroundColor": rgb(WHITE), "fontSize": 11}},
-               "backgroundColor,textFormat"),
-        repeat(gid, 16, 17, 0, 9,
+        repeat(gid, a["legend_start"], a["legend_start"] + 4, 0, cols,
                {"wrapStrategy": "WRAP", "verticalAlignment": "TOP", "textFormat": {"foregroundColor": rgb(GREY), "fontSize": 10}},
                "wrapStrategy,verticalAlignment,textFormat"),
-        repeat(gid, 19, 21, 0, 9,
+        repeat(gid, a["notes_start"], a["notes_end"], 0, cols,
                {"wrapStrategy": "WRAP", "verticalAlignment": "TOP", "textFormat": {"foregroundColor": rgb(GREY), "fontSize": 10}},
                "wrapStrategy,verticalAlignment,textFormat"),
     ]
-    for row, bg, fg in [(10, GREEN_BG, GREEN_FG), (11, BLUE_BG, BLUE_FG),
-                        (12, GREY_BG, GREY_FG), (13, RED_BG, RED_FG)]:
+    for offset, (bg, fg) in enumerate(
+        [(GREEN_BG, GREEN_FG), (ORANGE_BG, ORANGE_FG), (GREY_BG, GREY_FG), (RED_BG, RED_FG)]
+    ):
+        row = a["legend_start"] + offset
         reqs.append(repeat(gid, row, row + 1, 0, 1,
                            {"backgroundColor": rgb(bg), "textFormat": {"bold": True, "foregroundColor": rgb(fg)}},
                            "backgroundColor,textFormat"))
     for index, width in enumerate([150, 160, 150, 160, 150, 160, 150, 160, 150]):
         reqs.append(col_width(gid, index, width))
     reqs.append(col_width(gid, 9, 40))
-    reqs.append(protect(gid, 0, 30, 0, 10, editors))
+    reqs.append(protect(gid, 0, a["notes_end"] + 6, 0, 10, editors))
+    return reqs
+
+
+# --- Kanban -------------------------------------------------------------------
+
+
+def build_kanban(tickets, generated):
+    """Tableau des tickets en colonnes par statut (vue type monday)."""
+    statuses = [
+        ("à faire", "À faire", GREY_BG, GREY_FG),
+        ("en cours", "En cours", ORANGE_BG, ORANGE_FG),
+        ("fait", "Fait / Livré", GREEN_BG, GREEN_FG),
+        ("remplacé", "Remplacé / Refusé", RED_BG, RED_FG),
+    ]
+    groups = {key: [] for key, *_ in statuses}
+    known = set(groups)
+    for row in tickets[1:]:
+        if not row:
+            continue
+        statut = row[9] if len(row) > 9 else ""
+        groups[statut if statut in known else "à faire"].append(row)
+
+    width = len(statuses) * 2
+    header = [""] * width
+    for index, (key, label, *_rest) in enumerate(statuses):
+        header[index * 2] = label
+    depth = max((len(v) for v in groups.values()), default=1)
+    data = [[""] * width for _ in range(depth)]
+    for index, (key, *_rest) in enumerate(statuses):
+        for row_index, row in enumerate(groups[key]):
+            data[row_index][index * 2] = row[0]
+            data[row_index][index * 2 + 1] = row[1] if len(row) > 1 else ""
+
+    rows = [
+        ["Kanban : tickets par statut"],
+        [f"Dernière génération : {generated}"],
+        [],
+        header,
+    ]
+    rows += data
+    return rows, statuses, width
+
+
+def kanban_requests(gid, statuses, width, rows, service_email):
+    editors = [service_email] if service_email else []
+    end = rows + 1
+    reqs = [
+        merge(gid, 0, 1, 0, width),
+        merge(gid, 1, 2, 0, width),
+        repeat(gid, 0, 1, 0, width,
+               {"backgroundColor": rgb(INK), "textFormat": {"bold": True, "foregroundColor": rgb(WHITE), "fontSize": 20}},
+               "backgroundColor,textFormat"),
+        row_height(gid, 0, 44),
+        repeat(gid, 1, 2, 0, width,
+               {"textFormat": {"foregroundColor": rgb(GREY), "fontSize": 10, "italic": True}},
+               "textFormat"),
+        row_height(gid, 3, 34),
+        {"updateSheetProperties": {
+            "properties": {"sheetId": gid, "gridProperties": {
+                "frozenRowCount": 4, "hideGridlines": True}},
+            "fields": "gridProperties.frozenRowCount,gridProperties.hideGridlines"}},
+        repeat(gid, 4, end, 0, width,
+               {"wrapStrategy": "WRAP", "verticalAlignment": "TOP",
+                "textFormat": {"foregroundColor": rgb(TEXT), "fontSize": 10}},
+               "wrapStrategy,verticalAlignment,textFormat"),
+    ]
+    for index, (_key, _label, bg, fg) in enumerate(statuses):
+        base = index * 2
+        reqs.append(
+            repeat(gid, 3, 4, base, base + 2,
+                   {"backgroundColor": rgb(bg),
+                    "textFormat": {"bold": True, "foregroundColor": rgb(fg), "fontSize": 11}},
+                   "backgroundColor,textFormat")
+        )
+        reqs.append(
+            repeat(gid, 4, end, base, base + 1,
+                   {"textFormat": {"bold": True, "foregroundColor": rgb(SUBTLE)}},
+                   "textFormat")
+        )
+    reqs.append(banding(gid, 4, end, 0, width))
+    for index in range(len(statuses)):
+        reqs.append(col_width(gid, index * 2, 90))
+        reqs.append(col_width(gid, index * 2 + 1, 260))
+    reqs.append(protect(gid, 0, max(end, 5), 0, width, editors))
     return reqs
 
 
@@ -927,9 +1024,10 @@ def demandes_requests(gid, service_email) -> list[dict]:
 
 
 TAB_COLORS = {
-    "Accueil": BRAND, "Récits métier": PURPLE_BG, "Décisions": ORANGE_BG,
-    "Demandes": YELLOW_BG, "Tickets": GREY_BG, "Plans": "#8A8F98",
-    "Specs": "#8A8F98", "Référentiels": "#B9BEC6", "Tableau de bord": BRAND,
+    "Accueil": BRAND, "Récits métier": PURPLE_BG, "Kanban": "#00A9B5",
+    "Décisions": ORANGE_BG, "Demandes": YELLOW_BG, "Tickets": GREY_BG,
+    "Plans": "#8A8F98", "Specs": "#8A8F98", "Référentiels": "#B9BEC6",
+    "Tableau de bord": BRAND,
 }
 
 
@@ -1010,7 +1108,10 @@ def main() -> None:
             spreadsheetId=spreadsheet_id, range=f"'Récits métier'!X2:X{n}",
             valueInputOption="USER_ENTERED", body={"values": alerte}).execute(num_retries=5)
 
-    write_tab(sheets, spreadsheet_id, "Accueil", build_home(ids, sep, generated), raw=False)
+    home_rows, home_anchors = build_home(ids, sep, generated)
+    write_tab(sheets, spreadsheet_id, "Accueil", home_rows, raw=False)
+    kanban_rows, kanban_statuses, kanban_width = build_kanban(ticket_rows, generated)
+    write_tab(sheets, spreadsheet_id, "Kanban", kanban_rows)
     decisions = [DECISION_HEADERS]
     for row in recit_rows[1:]:
         row = row + [""] * (RECITS_COLS - len(row))
@@ -1042,7 +1143,9 @@ def main() -> None:
                             [service_email] if service_email else []))
     requests.append(protect(ids["Référentiels"], 0, counts["Référentiels"] + 1, 0, 8,
                             [service_email] if service_email else []))
-    requests += format_home(ids["Accueil"], service_email)
+    requests += format_home(ids["Accueil"], service_email, home_anchors)
+    requests += kanban_requests(ids["Kanban"], kanban_statuses, kanban_width,
+                                len(kanban_rows) - 1, service_email)
     requests += decisions_requests(ids["Décisions"], len(decisions) - 1, service_email)
     requests += demandes_requests(ids["Demandes"], service_email)
     requests += format_dashboard(ids["Tableau de bord"], refs, service_email)
