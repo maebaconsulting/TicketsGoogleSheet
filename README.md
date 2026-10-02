@@ -41,6 +41,11 @@ python3 -m venv .venv
 cp config.example.json config.json   # puis éditer
 ```
 
+Initialisation automatisée si le SDK Google Cloud est installé et connecté
+(`gcloud auth login`) : `python3 bootstrap.py --source ../mon-projet` crée le
+projet, active les API, crée le compte de service et sa clé, crée le classeur,
+le partage et écrit `config.json`.
+
 `config.json` (ignoré par git) contient :
 
 | Clé | Rôle |
@@ -93,6 +98,7 @@ Le script lié est créé et déployé ; recharger le classeur fait apparaître 
 
 ```
 config.py               configuration
+bootstrap.py            initialisation automatique via gcloud (projet, API, classeur)
 new_project.py          amorçage sur un nouveau projet (détection de convention)
 parser.py               dépôt -> tickets.json + exports
 sheets.py               habillage et remplissage du classeur

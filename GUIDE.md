@@ -31,12 +31,36 @@ formulaires intégrés. Comptez 20 à 30 minutes la première fois.
 
 Le dépôt analysé et le classeur sont **configurables** : rien n'est en dur.
 
+### Chemin rapide avec gcloud (recommandé)
+
+Si vous installez le SDK Google Cloud et vous connectez une fois, tout le reste
+s'automatise :
+
+```bash
+# une fois
+# installer gcloud : https://cloud.google.com/sdk/docs/install
+gcloud auth login
+
+# puis, depuis le dossier de l'outil
+python3 bootstrap.py --source ../mon-projet --project MON-PROJET
+```
+
+`bootstrap.py` crée (ou réutilise) le projet, active les API Sheets, Drive et
+Apps Script, crée le compte de service et sa clé `key.json`, crée le classeur,
+le partage en Éditeur avec le compte de service et écrit `config.json`. Les
+sections 3 à 6 deviennent alors inutiles. Reste un seul geste manuel : activer le
+réglage utilisateur Apps Script avant l'étape 9.
+
+Les sections suivantes détaillent chaque étape pour la voie manuelle.
+
 ## 1. Prérequis
 
 - Python 3.11 ou plus récent (`python3 --version`).
 - Un **compte Google** (le vôtre) pour créer le compte de service et le classeur.
 - Node.js 18+ (facultatif, seulement pour déployer les formulaires Apps Script).
 - `git` (l'avancement des tickets est déduit des commits du dépôt analysé).
+- SDK Google Cloud `gcloud` (facultatif, pour l'initialisation automatisée de
+  `bootstrap.py`).
 
 ## 2. Installer l'outil
 
