@@ -1,0 +1,16 @@
+{
+  "source_repo": "../OCP/appgestion/OpenSalon",
+  "plans_dir": "docs/superpowers/plans",
+  "specs_dir": "docs/superpowers/specs",
+  "decisions_path": "docs/superpowers/DECISIONS.md",
+  "main_branch": "main",
+  "github_repo": "clawnify/OpenSalon",
+  "gitlab_project": "clawnify/OpenSalon",
+  "spreadsheet_id": "1m2ihQjOkq9hn1O3Xa5TvRgfBL-f3F3FuBV2FLl4XqU8",
+  "sheet_name": "export-tickets",
+  "credentials": "key.json",
+  "stories_file": "examples/lama/stories.json",
+  "generated_dir": "examples/lama/generated",
+  "people_file": "people.json",
+  "product_name": "lama"
+}

@@ -1,0 +1,939 @@
+[
+  {
+    "id": "CODE-001",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Faire avancer le statut d'un rendez-vous",
+    "recit": "En tant que réceptionniste, je veux faire avancer le statut d'un rendez-vous d'un geste, afin de suivre l'arrivée, le soin et la fin sans chercher.",
+    "benefice": "Le déroulé de la journée est visible d'un coup d'œil, chaque personne sait quoi faire ensuite.",
+    "criteres": "Le geste suivant est proposé selon le statut actuel (réservé, confirmé, en cours, terminé) ; annuler et marquer absente demandent une confirmation ; le rendez-vous rétabli est refusé si la praticienne n'est plus libre.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/client/components/appointment-detail.tsx:118",
+      "src/client/components/appointment-detail.tsx:187",
+      "src/client/lib/fiche-rdv.ts"
+    ]
+  },
+  {
+    "id": "CODE-002",
+    "domaine": "Agenda",
+    "role": "praticienne",
+    "fonctionnalite": "Noter un rendez-vous",
+    "recit": "En tant que praticienne, je veux ajouter une note horodatée à un rendez-vous, afin de garder la mémoire du soin et des préférences de la cliente.",
+    "benefice": "Continuité du service d'une visite à l'autre, sans carnet papier.",
+    "criteres": "Les notes s'affichent de la plus récente à la plus ancienne ; une note peut être ajoutée par la praticienne comme par la gérante et la réception ; la suppression d'une note est réservée à la gérante et à la réception.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/server/index.ts:814",
+      "src/client/components/appointment-detail.tsx:355"
+    ]
+  },
+  {
+    "id": "CODE-003",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Appeler la cliente en un clic",
+    "recit": "En tant que réceptionniste, je veux appeler la cliente depuis son rendez-vous, afin de la joindre sans recopier son numéro.",
+    "benefice": "Moins d'erreurs de numéro, contact plus rapide.",
+    "criteres": "Le bouton Appeler n'apparaît que si un téléphone est renseigné ; l'appel part depuis le téléphone de l'appareil ; disponible aussi sur la fiche cliente.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/client/components/appointment-detail.tsx:205",
+      "src/client/lib/fiche-rdv.ts"
+    ]
+  },
+  {
+    "id": "CODE-004",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Supprimer un rendez-vous non facturé",
+    "recit": "En tant que réceptionniste, je veux supprimer un rendez-vous créé par erreur, afin de nettoyer l'agenda, mais jamais effacer un rendez-vous déjà encaissé.",
+    "benefice": "Agenda propre sans perdre de trace comptable.",
+    "criteres": "La suppression passe par un menu et une confirmation ; un rendez-vous cité par une facture ou un acompte est refusé et s'annule à la place ; le numéro et la cliente sont rappelés avant de confirmer.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/server/index.ts:799",
+      "src/client/components/appointment-detail.tsx:370"
+    ]
+  },
+  {
+    "id": "CODE-005",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Consulter l'agenda sur téléphone",
+    "recit": "En tant que réceptionniste, je veux voir une praticienne à la fois sur mon téléphone et passer à la suivante d'un glissement, afin de suivre l'agenda même en déplacement dans l'institut.",
+    "benefice": "Agenda utilisable partout, pas seulement au comptoir.",
+    "criteres": "Des pastilles en haut indiquent chaque praticienne et son nombre de rendez-vous du jour ; un glissement latéral change de praticienne ; aucune colonne ne dépasse de l'écran.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/client/components/calendar-view.tsx:66",
+      "src/client/components/calendar-view.tsx:142",
+      "src/client/components/agenda/pastilles.tsx"
+    ]
+  },
+  {
+    "id": "CODE-006",
+    "domaine": "Agenda",
+    "role": "gérante",
+    "fonctionnalite": "Exporter la feuille du jour",
+    "recit": "En tant que gérante, je veux télécharger la feuille du jour, afin de l'imprimer ou de la transmettre telle quelle.",
+    "benefice": "Un document de travail partageable, bilingue et propre.",
+    "criteres": "Le fichier est un CSV avec en-têtes traduits ; le séparateur est le point-virgule en français et la virgule en anglais ; les rendez-vous et les créneaux bloqués y figurent, triés par heure.",
+    "plans": [
+      "SP4-V2",
+      "SP3"
+    ],
+    "evidence": [
+      "src/client/lib/day-sheet.ts:23",
+      "src/client/components/calendar-view.tsx:113"
+    ]
+  },
+  {
+    "id": "CODE-007",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Créer un rendez-vous depuis un créneau",
+    "recit": "En tant que réceptionniste, je veux toucher un créneau vide de l'agenda pour ouvrir un rendez-vous pré-rempli, afin de réserver la bonne praticienne au bon créneau en un geste.",
+    "benefice": "Prise de rendez-vous plus rapide au comptoir.",
+    "criteres": "La praticienne, le jour et l'heure du créneau touché sont pré-remplis ; les prestations choisies calculent la durée et le prix ; un conflit est expliqué dans la fenêtre avant de forcer.",
+    "plans": [
+      "SP4-V2"
+    ],
+    "evidence": [
+      "src/client/components/calendar-view.tsx:72",
+      "src/client/components/create-appointment.tsx:29"
+    ]
+  },
+  {
+    "id": "CODE-008",
+    "domaine": "Clientèle",
+    "role": "réception",
+    "fonctionnalite": "Créer une fiche cliente",
+    "recit": "En tant que réceptionniste, je veux créer une fiche cliente avec ses coordonnées, afin de rattacher ses rendez-vous et ses factures à une personne.",
+    "benefice": "Chaque visite est reliée à une cliente identifiée.",
+    "criteres": "Nom obligatoire, email et téléphone facultatifs ; l'accord WhatsApp et la langue de ses messages sont posés à la création ; la recherche tolère les accents.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/index.ts:954",
+      "src/client/components/create-client.tsx"
+    ]
+  },
+  {
+    "id": "CODE-009",
+    "domaine": "Clientèle",
+    "role": "réception",
+    "fonctionnalite": "Mettre à jour une fiche cliente",
+    "recit": "En tant que réceptionniste, je veux modifier les coordonnées et les notes d'une cliente, afin que l'accueil suivant soit juste.",
+    "benefice": "Des données clientes à jour, une relation soignée.",
+    "criteres": "Le nom, l'email, le téléphone et les notes sont modifiables ; la praticienne ne peut modifier que les notes ; la fiche est ouverte dans le panneau sans quitter la liste.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/index.ts:980",
+      "src/server/index.ts:997",
+      "src/server/auth/permissions.ts:69"
+    ]
+  },
+  {
+    "id": "CODE-010",
+    "domaine": "Clientèle",
+    "role": "gérante",
+    "fonctionnalite": "Protéger l'historique d'une cliente",
+    "recit": "En tant que gérante, je veux qu'une cliente ayant des rendez-vous ou des factures ne puisse pas être supprimée, afin de ne jamais perdre l'historique de l'institut.",
+    "benefice": "Mémoire de l'institut garantie, comptes intacts.",
+    "criteres": "La suppression est refusée si la cliente a des rendez-vous ; elle est refusée aussi si elle est citée par une facture, même une vente de comptoir sans rendez-vous.",
+    "plans": [
+      "SP5-V1"
+    ],
+    "evidence": [
+      "src/server/index.ts:1028",
+      "src/server/index.ts:1035"
+    ]
+  },
+  {
+    "id": "CODE-011",
+    "domaine": "Prestations et stocks",
+    "role": "réception",
+    "fonctionnalite": "Ajuster le stock au comptoir",
+    "recit": "En tant que réceptionniste, je veux ajuster le stock d'un produit, afin de tenir l'inventaire sans attendre la gérante.",
+    "benefice": "Inventaire juste, geste simple au comptoir.",
+    "criteres": "La réception ne peut modifier que le champ stock d'un produit ; les autres champs du produit restent réservés à la gérante ; la quantité ne peut pas être négative.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/auth/permissions.ts:69",
+      "src/server/index.ts:1448"
+    ]
+  },
+  {
+    "id": "CODE-012",
+    "domaine": "Prestations et stocks",
+    "role": "réception",
+    "fonctionnalite": "Repérer les produits en stock bas",
+    "recit": "En tant que réceptionniste, je veux voir les produits en stock bas, afin de commander avant la rupture.",
+    "benefice": "Pas de rupture sur un produit attendu par une cliente.",
+    "criteres": "Le compteur des produits en stock bas apparaît dans les chiffres du jour ; un badge Stock bas marque la fiche du produit ; le seuil d'alerte est propre à chaque produit.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/index.ts:394",
+      "src/client/components/accueil/aujourdhui.tsx:182"
+    ]
+  },
+  {
+    "id": "CODE-013",
+    "domaine": "Prestations et stocks",
+    "role": "gérante",
+    "fonctionnalite": "Désactiver un membre",
+    "recit": "En tant que gérante, je veux désactiver un membre de l'équipe plutôt que le supprimer, afin que ses rendez-vous passés et ses factures restent complets.",
+    "benefice": "Historique préservé, planning à jour.",
+    "criteres": "La suppression est refusée si le membre a des rendez-vous, un compte lié, des factures ou des pourboires ; la désactivation retire le membre des plannings et des listes actives.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/index.ts:1147",
+      "src/server/index.ts:1105"
+    ]
+  },
+  {
+    "id": "CODE-014",
+    "domaine": "Prestations et stocks",
+    "role": "gérante",
+    "fonctionnalite": "Choisir la couleur d'une praticienne",
+    "recit": "En tant que gérante, je veux donner à chaque praticienne une couleur de la charte, afin de la reconnaître dans l'agenda sans confusion.",
+    "benefice": "Agenda lisible, chaque praticienne repérable.",
+    "criteres": "La couleur est choisie dans un nuancier sobre ; elle apparaît en liseré de ses étiquettes de rendez-vous ; le nom et la fonction bilingue sont saisis sur la même fiche.",
+    "plans": [
+      "SP4-V4"
+    ],
+    "evidence": [
+      "src/server/index.ts:1099",
+      "src/client/components/ink-picker.tsx"
+    ]
+  },
+  {
+    "id": "CODE-015",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Approuver une remise hors plafond",
+    "recit": "En tant que réceptionniste, je veux faire approuver par une gérante une remise supérieure au plafond réglé, afin de consentir un geste commercial sans abuser.",
+    "benefice": "Souplesse commerciale encadrée, responsabilité claire.",
+    "criteres": "Au-delà du plafond, le mot de passe d'une gérante est demandé ; la gérante qui encaisse confirme par son propre mot de passe ; l'approbation est inscrite au journal des accès.",
+    "plans": [
+      "SP5-V1"
+    ],
+    "evidence": [
+      "src/server/caisse/routes.ts:141",
+      "src/client/components/caisse/approbation.tsx"
+    ]
+  },
+  {
+    "id": "CODE-016",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Refuser une vente en rupture",
+    "recit": "En tant que réceptionniste, je veux qu'une vente qui passerait le stock sous zéro soit refusée, afin de ne jamais vendre un produit absent.",
+    "benefice": "Stock fiable, promesse tenue à la cliente.",
+    "criteres": "Chaque produit vendu décrémente le stock dans la même transaction que la facture ; le refus nomme le produit concerné ; rien n'est émis si le stock est insuffisant.",
+    "plans": [
+      "SP5-V1"
+    ],
+    "evidence": [
+      "src/server/caisse/vente.ts:301",
+      "src/server/caisse/vente.ts:307"
+    ]
+  },
+  {
+    "id": "CODE-017",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Reprendre une vente sans doublon",
+    "recit": "En tant que réceptionniste, je veux qu'une vente dont la réponse s'est perdue puisse être rejouée sans créer deux factures, afin de ne jamais doubler une cliente.",
+    "benefice": "Fiabilité de la caisse, même en cas de coupure.",
+    "criteres": "Chaque vente porte un identifiant de demande unique ; renvoyer la même demande rend la facture déjà émise ; un double appui ne crée qu'une facture.",
+    "plans": [
+      "SP5-V1"
+    ],
+    "evidence": [
+      "src/server/caisse/routes.ts:238",
+      "src/server/caisse/vente.ts:244"
+    ]
+  },
+  {
+    "id": "CODE-018",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Vendre un produit sans cliente",
+    "recit": "En tant que réceptionniste, je veux encaisser une vente de produits seuls sans rattacher de cliente, afin de servir une personne de passage.",
+    "benefice": "Aucune vente de comptoir perdue faute de fiche.",
+    "criteres": "La cliente est facultative pour une vente de produits seuls ; elle devient obligatoire dès qu'une prestation figure au ticket ; une facture sans cliente reste possible.",
+    "plans": [
+      "SP5-V1"
+    ],
+    "evidence": [
+      "src/server/caisse/vente.ts:146",
+      "src/server/caisse/vente.ts:147"
+    ]
+  },
+  {
+    "id": "CODE-019",
+    "domaine": "Facturation",
+    "role": "gérante",
+    "fonctionnalite": "Garantir une numérotation sans trou",
+    "recit": "En tant que gérante, je veux que les factures, avoirs et reçus soient numérotés en continu sans aucun trou, afin que le fisc et le comptable s'y retrouvent.",
+    "benefice": "Conformité fiscale, confiance du comptable.",
+    "criteres": "Trois suites distinctes et continues remises à zéro chaque 1er janvier ; le numéro est pris dans la même transaction que le document ; toute erreur annule le numéro avec le document.",
+    "plans": [
+      "SP5-V2"
+    ],
+    "evidence": [
+      "src/server/migrations/005_caisse.ts:102",
+      "src/server/caisse/vente.ts:284"
+    ]
+  },
+  {
+    "id": "CODE-020",
+    "domaine": "Facturation",
+    "role": "gérante",
+    "fonctionnalite": "Rendre les factures immuables",
+    "recit": "En tant que gérante, je veux qu'une facture émise ne puisse être ni modifiée ni supprimée, afin qu'une correction passe toujours par un avoir numéroté.",
+    "benefice": "Comptes inaltérables, corrections traçables.",
+    "criteres": "Aucune route ne modifie ni ne supprime une facture, un versement ou un pourboire ; des déclencheurs SQL refusent toute écriture directe ; la seule correction admise est un avoir.",
+    "plans": [
+      "SP5-V2"
+    ],
+    "evidence": [
+      "src/server/migrations/005_caisse.ts:108",
+      "src/server/migrations/005_caisse.ts:110"
+    ]
+  },
+  {
+    "id": "CODE-021",
+    "domaine": "Facturation",
+    "role": "gérante",
+    "fonctionnalite": "Imprimer le ticket dans sa langue",
+    "recit": "En tant que gérante, je veux que le ticket, l'avoir et le reçu s'impriment dans la langue de la cliente, afin qu'elle comprenne son justificatif.",
+    "benefice": "Justificatifs respectueux d'une clientèle bilingue.",
+    "criteres": "La langue est figée sur le document à l'émission ; les désignations anglaises sont utilisées si elles existent, sinon le français ; le même moteur produit facture, avoir et reçu.",
+    "plans": [
+      "SP5-V2",
+      "SP3"
+    ],
+    "evidence": [
+      "src/server/caisse/routes.ts:110",
+      "src/server/caisse/ticket.ts:239"
+    ]
+  },
+  {
+    "id": "CODE-022",
+    "domaine": "Facturation",
+    "role": "gérante",
+    "fonctionnalite": "Détailler HT, TVA et TTC",
+    "recit": "En tant que gérante, je veux voir le sous-total, la TVA et le total TTC sur la facture et le ticket, afin de vérifier la fiscalité appliquée.",
+    "benefice": "Contrôle fiscal immédiat, ticket conforme.",
+    "criteres": "La TVA se calcule sur le total remisé, arrondie une seule fois ; total HT plus TVA égale total TTC ; quand la TVA est inactive, le total seul est imprimé avec la mention TVA non applicable.",
+    "plans": [
+      "SP5-V2"
+    ],
+    "evidence": [
+      "src/server/caisse/vente.ts:158",
+      "src/client/components/caisse/fiche-facture.tsx:132"
+    ]
+  },
+  {
+    "id": "CODE-023",
+    "domaine": "Avoirs",
+    "role": "gérante",
+    "fonctionnalite": "Autoriser les avoirs par la réception",
+    "recit": "En tant que gérante, je veux autoriser ou non la réception à émettre des avoirs, afin de déléguer la correction des factures sans perdre la main.",
+    "benefice": "Corrections plus rapides, droit maîtrisé par la gérante.",
+    "criteres": "Le réglage est désactivé par défaut ; sans l'autorisation, la réception reçoit un refus explicite ; l'écran ne montre le bouton Émettre un avoir qu'à qui le serveur l'accepte.",
+    "plans": [
+      "SP5-V3A"
+    ],
+    "evidence": [
+      "src/server/settings.ts:76",
+      "src/server/caisse/routes.ts:335",
+      "src/client/components/caisse/fiche-facture.tsx:53"
+    ]
+  },
+  {
+    "id": "CODE-024",
+    "domaine": "Acomptes",
+    "role": "gérante",
+    "fonctionnalite": "Tracer le sort d'un acompte",
+    "recit": "En tant que gérante, je veux voir en une phrase ce qu'est devenu un acompte, afin de savoir s'il est en attente, déduit, remboursé ou gardé.",
+    "benefice": "Comptes clairs sur les avances des clientes.",
+    "criteres": "Chaque reçu affiche son numéro, son montant et son statut ; un acompte remboursé est un versement négatif tracé ; un acompte gardé exige un motif.",
+    "plans": [
+      "SP5-V3B"
+    ],
+    "evidence": [
+      "src/client/components/caisse/acompte-rdv.tsx:39",
+      "src/server/migrations/008_acomptes.ts:22"
+    ]
+  },
+  {
+    "id": "CODE-025",
+    "domaine": "Clôture",
+    "role": "gérante",
+    "fonctionnalite": "Clôturer plusieurs fois dans la journée",
+    "recit": "En tant que gérante, je veux clôturer la caisse plusieurs fois dans la même journée, afin de séparer les services et de voir ce qui suit chaque clôture.",
+    "benefice": "Contrôle fin sans bloquer les encaissements.",
+    "criteres": "Une seconde clôture ne couvre que ce qui suit la précédente ; un encaissement après clôture apparaît dans une section Après clôture ; chaque clôture garde son numéro d'ordre, sa personne et son heure.",
+    "plans": [
+      "SP5-V3A"
+    ],
+    "evidence": [
+      "src/server/caisse/cloture-routes.ts:31",
+      "src/client/components/caisse/caisse-jour.tsx:226"
+    ]
+  },
+  {
+    "id": "CODE-026",
+    "domaine": "Clôture",
+    "role": "gérante",
+    "fonctionnalite": "Consulter la caisse d'un jour passé",
+    "recit": "En tant que gérante, je veux consulter la caisse d'un jour passé, afin de répondre à une question de comptes sans attendre le lendemain.",
+    "benefice": "Historique de caisse accessible, vérifications sereines.",
+    "criteres": "Les flèches changent de jour et bornent la navigation à aujourd'hui et aux jours passés ; les factures et avoirs du jour sont rangés par clôture ; le résumé reprend les totaux par moyen de paiement.",
+    "plans": [
+      "SP5-V3A"
+    ],
+    "evidence": [
+      "src/client/components/caisse/caisse-jour.tsx:213",
+      "src/server/caisse/cloture-routes.ts:23"
+    ]
+  },
+  {
+    "id": "CODE-027",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Recueillir l'accord WhatsApp d'une cliente",
+    "recit": "En tant que réceptionniste, je veux cocher ou décocher l'accord WhatsApp d'une cliente, afin que les envois automatiques respectent son choix.",
+    "benefice": "Respect de la cliente, envois ciblés.",
+    "criteres": "L'accord est coché par défaut ; les confirmations, rappels et tickets automatiques ne partent qu'aux clientes cochées ; le message libre reste possible vers toute cliente ayant un numéro.",
+    "plans": [
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/client/components/fiches/whatsapp-cliente.tsx:54",
+      "src/server/migrations/009_whatsapp.ts:11"
+    ]
+  },
+  {
+    "id": "CODE-028",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Choisir la langue des messages",
+    "recit": "En tant que réceptionniste, je veux indiquer la langue des messages d'une cliente, afin qu'elle reçoive ses rappels et son ticket dans sa langue.",
+    "benefice": "Relation bilingue soignée, messages compris.",
+    "criteres": "La langue se choisit entre français, anglais ou la langue par défaut de l'institut ; une langue vide suit le réglage de l'institut ; le choix vit sur la fiche cliente.",
+    "plans": [
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/client/components/fiches/whatsapp-cliente.tsx:56",
+      "src/server/migrations/009_whatsapp.ts:12"
+    ]
+  },
+  {
+    "id": "CODE-029",
+    "domaine": "WhatsApp",
+    "role": "gérante",
+    "fonctionnalite": "Normaliser un numéro camerounais",
+    "recit": "En tant que gérante, je veux que les numéros soient normalisés au format international avant l'envoi, afin qu'un numéro saisi sans indicatif parte quand même.",
+    "benefice": "Moins d'échecs d'envoi, messages qui arrivent.",
+    "criteres": "L'indicatif de l'institut est ajouté si le numéro ne l'a pas ; le zéro national est retiré ; un numéro impossible à normaliser est une erreur définitive visible dans la liste à envoyer à la main.",
+    "plans": [
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/server/whatsapp/numeros.ts:16",
+      "src/server/settings.ts:52"
+    ]
+  },
+  {
+    "id": "CODE-030",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Suivre la file d'envoi et relancer",
+    "recit": "En tant que réceptionniste, je veux voir les envois en attente ou en échec et les relancer, afin de savoir ce qui attend et de débloquer un envoi.",
+    "benefice": "Aucun message perdu de vue, reprise maîtrisée.",
+    "criteres": "La file montre le type, l'état, le nombre d'essais et la dernière erreur traduite ; un envoi en échec se relance d'un bouton ; le contenu des messages n'y est jamais affiché.",
+    "plans": [
+      "SP2A",
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/server/outbox/routes.ts:11",
+      "src/client/components/reglages/file-envoi.tsx:14"
+    ]
+  },
+  {
+    "id": "CODE-031",
+    "domaine": "WhatsApp",
+    "role": "technicien",
+    "fonctionnalite": "Cacher les messages à l’administrateur",
+    "recit": "En tant que technicien, je veux que le contenu des messages WhatsApp ne me soit jamais montré, afin que la vie privée des clientes reste protégée.",
+    "benefice": "Confidentialité des échanges, principe de moindre privilège.",
+    "criteres": "La file d'envoi ne renvoie jamais la charge utile ni la clé anti-doublon ; le texte des messages n'est montré qu'à la gérante et à la réception ; l'administrateur n'accède ni aux textes ni à la liste à envoyer à la main.",
+    "plans": [
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/server/auth/permissions.ts:54",
+      "src/server/outbox/routes.ts:14",
+      "src/client/lib/roles.ts:105"
+    ]
+  },
+  {
+    "id": "CODE-032",
+    "domaine": "WhatsApp",
+    "role": "technicien",
+    "fonctionnalite": "Choisir le fournisseur WhatsApp",
+    "recit": "En tant que technicien, je veux choisir le fournisseur WhatsApp ou aucun, afin d'adapter l'installation aux moyens de l'institut.",
+    "benefice": "Installation autonome, aucun service imposé.",
+    "criteres": "Le fournisseur se règle entre aucun et WAHA ; l'adresse, la clé et la session de la passerelle sont réglables ; sans fournisseur, les messages basculent vers la liste à envoyer à la main.",
+    "plans": [
+      "SP7-V1"
+    ],
+    "evidence": [
+      "src/server/settings.ts:48",
+      "src/client/components/reglages/fournisseur-whatsapp.tsx"
+    ]
+  },
+  {
+    "id": "CODE-033",
+    "domaine": "Accueil",
+    "role": "réception",
+    "fonctionnalite": "Repérer une cliente en retard",
+    "recit": "En tant que réceptionniste, je veux qu'une cliente confirmée dont l'heure est passée soit signalée, afin de relancer l'accueil au bon moment.",
+    "benefice": "Aucune cliente oubliée dans la salle d'attente.",
+    "criteres": "Un badge Retard marque la ligne dont l'heure de début est dépassée ; la ligne reste dans le groupe des arrivées à traiter ; le signal disparaît dès que le statut avance.",
+    "plans": [
+      "SP4-V3"
+    ],
+    "evidence": [
+      "src/client/components/accueil/aujourdhui.tsx:61",
+      "src/client/lib/agenda.ts"
+    ]
+  },
+  {
+    "id": "CODE-034",
+    "domaine": "Comptes et sécurité",
+    "role": "réception",
+    "fonctionnalite": "Se connecter par mot de passe",
+    "recit": "En tant que membre de l'équipe, je veux me connecter par identifiant et mot de passe, afin de retrouver mon espace sur mon appareil personnel.",
+    "benefice": "Accès simple et sûr à l'application.",
+    "criteres": "L'identifiant et le mot de passe sont exigés ; les mots de passe sont hachés et jamais journalisés ; un identifiant inconnu reçoit le même temps de réponse qu'un identifiant connu.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/routes.ts:69",
+      "src/client/components/auth/connexion.tsx:10"
+    ]
+  },
+  {
+    "id": "CODE-035",
+    "domaine": "Comptes et sécurité",
+    "role": "technicien",
+    "fonctionnalite": "Créer le compte administrateur à l'installation",
+    "recit": "En tant que technicien, je veux créer le compte administrateur à la première mise en route, afin de démarrer l'installation sur une base saine.",
+    "benefice": "Mise en service nette, un seul administrateur.",
+    "criteres": "L'écran d'installation n'existe que tant qu'aucun compte n'a été créé et se ferme ensuite ; deux installations simultanées n'en créent qu'une ; l'administrateur crée ensuite le compte de la gérante.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/routes.ts:48",
+      "src/client/components/auth/installation.tsx:10"
+    ]
+  },
+  {
+    "id": "CODE-036",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Débloquer un compte bloqué",
+    "recit": "En tant que gérante, je veux débloquer un compte de mon équipe après des échecs répétés, afin qu'une personne se soit simplement trompée.",
+    "benefice": "Équipe jamais bloquée à cause d'une faute de frappe.",
+    "criteres": "Après cinq échecs le compte se bloque un temps progressif ; la gérante et l'administrateur peuvent débloquer ; le déblocage est inscrit au journal des accès.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/accounts-routes.ts:102",
+      "src/server/auth/lockout.ts"
+    ]
+  },
+  {
+    "id": "CODE-037",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Confirmer une action sensible",
+    "recit": "En tant que gérante, je veux retaper mon mot de passe pour les actions sensibles, afin d'éviter une manipulation irréversible par accident.",
+    "benefice": "Garde-fou sur les gestes lourds, sérénité.",
+    "criteres": "Les comptes, les sauvegardes, la fiscalité, les avoirs et les moyens de paiement demandent une confirmation récente ; la confirmation vaut quelques minutes ; chaque confirmation est inscrite au journal.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/routes.ts:99",
+      "src/server/auth/middleware.ts"
+    ]
+  },
+  {
+    "id": "CODE-038",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Verrouiller automatiquement un poste partagé",
+    "recit": "En tant que gérante, je veux qu'un poste partagé se verrouille après une inactivité réglable, afin qu'aucun écran ne reste ouvert sans surveillance.",
+    "benefice": "Sécurité du comptoir, données à l'abri des regards.",
+    "criteres": "Le délai de verrouillage se règle de une à trente minutes ; le poste revient à l'écran des noms après ce délai ; les brouillons de notes en cours sont oubliés au verrouillage.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/settings.ts:40",
+      "src/client/hooks/use-idle-lock.ts",
+      "src/client/components/reglages/postes.tsx:127"
+    ]
+  },
+  {
+    "id": "CODE-039",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Déclarer et révoquer un poste partagé",
+    "recit": "En tant que gérante, je veux déclarer cet appareil comme poste partagé puis révoquer un poste, afin de garder la main sur les appareils de l'institut.",
+    "benefice": "Parc d'appareils maîtrisé, accès retirables.",
+    "criteres": "Un appareil déclaré affiche les noms de l'équipe active pour une connexion par PIN ; la révocation supprime les sessions du poste ; la liste indique les postes déclarés et leur état.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/devices.ts:30",
+      "src/server/auth/devices.ts:45",
+      "src/client/components/reglages/postes.tsx:105"
+    ]
+  },
+  {
+    "id": "CODE-040",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Cacher le chiffre d’affaires",
+    "recit": "En tant que gérante, je veux que la praticienne ne voie jamais les montants ni le chiffre d'affaires, afin de protéger les finances de l'institut.",
+    "benefice": "Confidentialité financière, équité de l'équipe.",
+    "criteres": "Les montants des rendez-vous et de leurs prestations sont retirés des réponses destinées à la praticienne ; la statistique de chiffre d'affaires ne lui est pas renvoyée ; elle garde seulement l'état payé de son propre rendez-vous.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/permissions.ts:83",
+      "src/server/index.ts:407"
+    ]
+  },
+  {
+    "id": "CODE-041",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Réinitialiser un mot de passe",
+    "recit": "En tant que gérante, je veux définir un nouveau mot de passe ou un nouveau PIN pour un membre de mon équipe, afin de le dépanner quand il l'a oublié.",
+    "benefice": "Autonomie de l'équipe, pas d'administrateur à appeler.",
+    "criteres": "La gérante gère les comptes de la réception et des praticiennes, l'administrateur tous les comptes ; changer le mot de passe supprime les sessions ouvertes ; un membre retire lui-même son PIN depuis Mon compte.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/auth/accounts-routes.ts:74",
+      "src/server/auth/accounts-routes.ts:112"
+    ]
+  },
+  {
+    "id": "CODE-042",
+    "domaine": "Comptes et sécurité",
+    "role": "technicien",
+    "fonctionnalite": "Limiter la taille des requêtes entrantes",
+    "recit": "En tant que technicien, je veux que les requêtes trop volumineuses soient refusées avant lecture, afin qu'un appareil du réseau ne puisse ni remplir la mémoire ni le disque du serveur.",
+    "benefice": "Serveur protégé, service disponible.",
+    "criteres": "Le corps des requêtes sous l'API est borné ; le dépassement est refusé par un code explicite avant toute lecture ; la limite s'applique avant même l'authentification.",
+    "plans": [],
+    "evidence": [
+      "src/server/index.ts:65",
+      "src/server/index.ts:70"
+    ]
+  },
+  {
+    "id": "CODE-043",
+    "domaine": "Exploitation",
+    "role": "technicien",
+    "fonctionnalite": "Lancer une sauvegarde à la demande",
+    "recit": "En tant que technicien, je veux lancer une sauvegarde immédiate depuis les Réglages, afin de figer les données avant une opération risquée.",
+    "benefice": "Point de restauration à tout moment.",
+    "criteres": "Le bouton Sauvegarder maintenant demande une confirmation ; la copie sur disque USB et l'envoi vers Drive sont enregistrés séparément ; l'historique montre l'état de chaque destination.",
+    "plans": [
+      "SP2B"
+    ],
+    "evidence": [
+      "src/server/backup/routes.ts:61",
+      "src/client/components/reglages/sauvegardes.tsx:28"
+    ]
+  },
+  {
+    "id": "CODE-044",
+    "domaine": "Exploitation",
+    "role": "technicien",
+    "fonctionnalite": "Restaurer une sauvegarde chiffrée",
+    "recit": "En tant que technicien, je veux restaurer une sauvegarde depuis le disque USB ou Google Drive, afin de retrouver les données après un incident.",
+    "benefice": "Reprise possible, activité protégée.",
+    "criteres": "La restauration demande une confirmation et la clé privée ; la base actuelle est mise de côté avant remplacement ; l'application passe en maintenance puis redémarre, avec un contrôle d'intégrité.",
+    "plans": [
+      "SP2B"
+    ],
+    "evidence": [
+      "src/server/backup/routes.ts:77",
+      "src/server/backup/routes.ts:113"
+    ]
+  },
+  {
+    "id": "CODE-045",
+    "domaine": "Exploitation",
+    "role": "technicien",
+    "fonctionnalite": "Surveiller l'état des sauvegardes",
+    "recit": "En tant que technicien, je veux être alerté quand une sauvegarde n'a pas réussi depuis trop longtemps, afin d'intervenir avant de manquer de secours.",
+    "benefice": "Veille automatique, pas de sauvegarde oubliée.",
+    "criteres": "Chaque destination est surveillée séparément ; une alerte apparaît après trente-six heures sans succès ; Google Drive n'est surveillé qu'une fois sa destination réglée.",
+    "plans": [
+      "SP2B"
+    ],
+    "evidence": [
+      "src/server/backup/routes.ts:31",
+      "src/server/backup/routes.ts:42"
+    ]
+  },
+  {
+    "id": "CODE-046",
+    "domaine": "Exploitation",
+    "role": "technicien",
+    "fonctionnalite": "Configurer la destination Google Drive",
+    "recit": "En tant que technicien, je veux régler la destination Google Drive des sauvegardes, afin que la copie hors site fonctionne.",
+    "benefice": "Copie hors site opérationnelle, données à l'abri d'un sinistre.",
+    "criteres": "La destination suit un format de dossier distant rclone ; une valeur invalide est refusée avec un message clair ; l'état de la dernière copie Drive est affiché.",
+    "plans": [
+      "SP2B"
+    ],
+    "evidence": [
+      "src/server/settings.ts:44",
+      "src/client/components/reglages/connexions.tsx:15"
+    ]
+  },
+  {
+    "id": "CODE-047",
+    "domaine": "Exploitation",
+    "role": "réception",
+    "fonctionnalite": "Voir les changements en direct",
+    "recit": "En tant que réceptionniste, je veux que les écrans connectés se mettent à jour sans recharger, afin que toute l'équipe voie la même journée au même instant.",
+    "benefice": "Cohérence de l'équipe, aucun rendez-vous fantôme.",
+    "criteres": "Un signal sans donnée sensible est diffusé après chaque changement ; chaque écran recharge ce qu'il affiche selon ses droits ; la reconnexion est automatique et un signal de vie maintient la liaison.",
+    "plans": [
+      "SP2A"
+    ],
+    "evidence": [
+      "src/server/realtime.ts:46",
+      "src/client/hooks/use-realtime.ts"
+    ]
+  },
+  {
+    "id": "CODE-048",
+    "domaine": "Réglages",
+    "role": "gérante",
+    "fonctionnalite": "Choisir la langue par défaut",
+    "recit": "En tant que gérante, je veux régler la langue par défaut de l'institut, afin que les tickets et messages partent dans la bonne langue quand la cliente n'en a pas choisi.",
+    "benefice": "Documents cohérents dès l'installation.",
+    "criteres": "La langue par défaut se choisit entre français et anglais ; elle s'applique aux documents et aux messages sans langue de cliente ; elle est distincte de la langue de chaque compte.",
+    "plans": [
+      "SP3",
+      "SP4-V5"
+    ],
+    "evidence": [
+      "src/server/settings.ts:37",
+      "src/client/components/reglages/institut.tsx:16"
+    ]
+  },
+  {
+    "id": "CODE-049",
+    "domaine": "Réglages",
+    "role": "gérante",
+    "fonctionnalite": "Activer une fonction de la caisse",
+    "recit": "En tant que gérante, je veux activer ou désactiver chaque fonction de la caisse, afin que l'outil colle au fonctionnement réel de l'institut.",
+    "benefice": "Pas de fonction imposée, réglages sans technicien.",
+    "criteres": "Remises et plafond, pourboires, acomptes, avoirs par la réception et encaissement par la praticienne sont réglables séparément ; les acomptes et les avoirs par la réception sont désactivés par défaut ; chaque changement est journalisé.",
+    "plans": [
+      "SP5-V2"
+    ],
+    "evidence": [
+      "src/server/settings.ts:68",
+      "src/client/components/reglages/caisse.tsx"
+    ]
+  },
+  {
+    "id": "CODE-050",
+    "domaine": "Bilinguisme",
+    "role": "gérante",
+    "fonctionnalite": "Saisir les données en deux langues",
+    "recit": "En tant que gérante, je veux saisir le nom et la catégorie d'une prestation ou d'un produit en français et en anglais, afin de servir une clientèle bilingue sans retraduire chaque fois.",
+    "benefice": "Catalogue impeccable dans les deux langues.",
+    "criteres": "Chaque champ concerné a sa version anglaise facultative ; un champ anglais vide fait afficher le français ; la fonction de l'équipe se saisit aussi dans les deux langues.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/server/index.ts:1195",
+      "src/server/migrations/003_bilingue.ts"
+    ]
+  },
+  {
+    "id": "CODE-051",
+    "domaine": "Bilinguisme",
+    "role": "gérante",
+    "fonctionnalite": "Choisir la langue d’un compte",
+    "recit": "En tant que gérante, je veux définir la langue d'un compte de mon équipe, afin qu'une personne anglophone travaille en anglais dès sa première connexion.",
+    "benefice": "Chacun travaille dans sa langue.",
+    "criteres": "La langue se choisit à la création du compte et se modifie ensuite ; le changement est inscrit au journal des accès ; il s'applique à la prochaine relecture de l'état de connexion, sans couper la session.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/server/auth/accounts-routes.ts:88",
+      "src/client/components/reglages/comptes.tsx:96"
+    ]
+  },
+  {
+    "id": "CODE-052",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Afficher les formats locaux",
+    "recit": "En tant que réceptionniste, je veux voir les montants en francs CFA et les dates à l'heure de Douala, afin de travailler sans conversion mentale.",
+    "benefice": "Lecture immédiate des chiffres de l'institut.",
+    "criteres": "Les montants suivent le format de la langue, en francs CFA sans décimales sur les documents officiels ; les dates et heures sont affichées à l'heure de Douala, sur vingt-quatre heures ; les prix hérités avec décimales sont arrondis à l'affichage.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/shared/caisse.ts",
+      "src/client/lib/format.ts"
+    ]
+  },
+  {
+    "id": "CODE-053",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Replier sur le français",
+    "recit": "En tant que réceptionniste, je veux qu'une prestation sans version anglaise s'affiche en français, afin de ne jamais voir de trou ni de clé brute.",
+    "benefice": "Catalogue toujours lisible, aucun écran cassé.",
+    "criteres": "L'anglais est choisi s'il est rempli et si l'écran est en anglais, sinon le français ; le repli fonctionne dans les listes, fiches, agenda et feuille du jour ; une désignation vide n'apparaît jamais.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/client/lib/bilingual.ts",
+      "src/server/index.ts:934"
+    ]
+  },
+  {
+    "id": "CODE-054",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Naviguer par adresses bilingues",
+    "recit": "En tant que réceptionniste, je veux que chaque écran réponde à son adresse française et anglaise, afin de partager un lien clair dans la langue de chacun.",
+    "benefice": "Liens partageables, navigation cohérente.",
+    "criteres": "Les deux formes mènent au même écran sans préfixe de langue ; la barre d'adresse suit la langue en cours et bascule sans recharger ; une adresse inconnue ramène au tableau de bord.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/client/lib/routes.ts:15",
+      "src/client/lib/routes.ts:82"
+    ]
+  },
+  {
+    "id": "CODE-055",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Recevoir les refus dans ma langue",
+    "recit": "En tant que réceptionniste, je veux que les messages d'erreur et de conflit du serveur arrivent dans la langue de mon écran, afin de comprendre tout de suite ce qui bloque.",
+    "benefice": "Erreurs comprises, correction immédiate.",
+    "criteres": "Le serveur suit l'en-tête de langue envoyé par l'écran ; sans en-tête il répond en anglais ; le jeton allow_conflict reste intact dans les deux langues pour les outils.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/server/messages.ts",
+      "src/server/index.ts:110"
+    ]
+  },
+  {
+    "id": "CODE-056",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Rechercher dans les deux langues",
+    "recit": "En tant que réceptionniste, je veux retrouver une prestation ou un produit par son nom français ou anglais, afin de ne pas ralentir au comptoir.",
+    "benefice": "Recherche tolérante, gain de temps bilingue.",
+    "criteres": "La recherche cherche dans le nom français et anglais à la fois ; les marques et références sont incluses pour un produit ; la recherche ignore accents et casse.",
+    "plans": [
+      "SP3"
+    ],
+    "evidence": [
+      "src/server/index.ts:1363",
+      "src/server/index.ts:874"
+    ]
+  },
+  {
+    "id": "CODE-057",
+    "domaine": "Identité",
+    "role": "gérante",
+    "fonctionnalite": "Consulter la charte de référence",
+    "recit": "En tant que gérante, je veux consulter la page de la charte, afin de vérifier l'allure de la maison et les composants employés.",
+    "benefice": "Référence visuelle unique pour toute l'équipe.",
+    "criteres": "La page montre le logo et ses usages, les couleurs, l'échelle typographique et tous les composants dans leurs états ; elle reste en thème clair ; elle est joignable hors du menu, par tous.",
+    "plans": [
+      "SP1"
+    ],
+    "evidence": [
+      "src/client/components/charte.tsx",
+      "src/client/app.tsx:24"
+    ]
+  },
+  {
+    "id": "CODE-058",
+    "domaine": "Identité",
+    "role": "gérante",
+    "fonctionnalite": "Retrouver lama sur les documents",
+    "recit": "En tant que gérante, je veux que les documents portent la signature discrète propulsé par lama, afin que l'institut présente ses justificatifs sous une marque soignée.",
+    "benefice": "Image de marque cohérente, identité lama assumée.",
+    "criteres": "Le pied des documents porte la signature discrète en français et en anglais ; le nom de l'institut en tête suffit quand aucun logo n'est déposé ; les métadonnées des PDF nomment lama comme créateur.",
+    "plans": [
+      "LAMA"
+    ],
+    "evidence": [
+      "src/server/caisse/ticket.ts:243",
+      "src/server/caisse/ticket-pdf.ts:54"
+    ]
+  }
+]

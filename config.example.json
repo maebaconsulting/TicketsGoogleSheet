@@ -1,0 +1,16 @@
+{
+  "source_repo": "../OCP/appgestion/OpenSalon",
+  "plans_dir": "docs/superpowers/plans",
+  "specs_dir": "docs/superpowers/specs",
+  "decisions_path": "docs/superpowers/DECISIONS.md",
+  "main_branch": "main",
+  "github_repo": "owner/repo",
+  "gitlab_project": "owner/repo",
+  "spreadsheet_id": "",
+  "sheet_name": "export-tickets",
+  "credentials": "key.json",
+  "stories_file": "stories.json",
+  "generated_dir": "generated",
+  "people_file": "people.json",
+  "product_name": "Backlog"
+}

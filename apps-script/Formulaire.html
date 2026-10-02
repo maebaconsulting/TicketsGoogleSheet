@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --brand:#0073ea; --text:#323338; --subtle:#676879; --border:#e6e9ef;
+    --surface:#fff; --alt:#f6f7fb; --green:#00c875; --orange:#fdab3d;
+    --red:#e2445c; --blue:#579bfc; --purple:#a25ddc; --grey:#c4c4c4;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  body{margin:0;font:14px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--alt)}
+  header{background:var(--brand);color:#fff;padding:12px 18px;display:flex;align-items:center;gap:10px;font-weight:600}
+  header .dot{width:10px;height:10px;border-radius:50%;background:#fff}
+  .tabs{display:flex;gap:6px;padding:12px 16px 0;background:var(--alt)}
+  .tab{padding:8px 14px;border-radius:8px 8px 0 0;cursor:pointer;color:var(--subtle);font-weight:600;font-size:13px}
+  .tab.active{background:var(--surface);color:var(--brand)}
+  .body{padding:16px;max-height:84vh;overflow:auto}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:18px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+  .search{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;font:inherit}
+  .list{max-height:66vh;overflow:auto}
+  .item{padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;margin-bottom:3px}
+  .item:hover{background:var(--alt)}
+  .item.active{background:#eaf2ff;border-color:#cfe0ff}
+  .item .id{font-size:11px;color:var(--subtle);font-weight:600}
+  .item .t{font-weight:600;font-size:12px}
+  h2{margin:0 0 4px;font-size:17px}
+  .sub{color:var(--subtle);font-size:12px;margin-bottom:14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--subtle);margin-bottom:4px}
+  input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;
+    font:inherit;color:var(--text);background:#fff;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 2px #dbe9ff}
+  textarea{min-height:76px;resize:vertical}
+  .full{grid-column:1/-1}
+  .actions{margin-top:16px;display:flex;gap:10px;align-items:center}
+  button{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-weight:600;cursor:pointer}
+  button.ghost{background:#fff;color:var(--brand);border:1px solid var(--border)}
+  button:disabled{opacity:.5;cursor:default}
+  .toast{position:fixed;bottom:18px;right:18px;background:#323338;color:#fff;padding:10px 15px;
+    border-radius:8px;opacity:0;transform:translateY(8px);transition:.2s}
+  .toast.on{opacity:1;transform:none}
+  .pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#fff;background:var(--grey)}
+</style>
+</head>
+<body>
+<header><span class="dot"></span> <span id="appName"><?= product ?></span> : saisie du backlog</header>
+<div class="tabs">
+  <div class="tab" data-tab="recit">Modifier un récit</div>
+  <div class="tab" data-tab="create">Créer un récit</div>
+  <div class="tab" data-tab="demande">Nouvelle demande</div>
+</div>
+<div class="body">
+  <!-- Modifier -->
+  <div id="paneRecit" class="layout" hidden>
+    <div class="card">
+      <input class="search" id="search" placeholder="Rechercher…">
+      <div class="list" id="list"></div>
+    </div>
+    <div class="card">
+      <h2 id="rTitle">Choisissez un récit</h2>
+      <div class="sub" id="rSub">Colonnes H à Q enregistrées.</div>
+      <form id="recitForm" class="grid" hidden>
+        <div class="full sub" id="rMeta"></div>
+        <div><label>Priorité</label><select name="priorite" id="f_priorite"></select></div>
+        <div><label>Statut métier</label><select name="statut_metier" id="f_statut"></select></div>
+        <div><label>Décision</label><select name="decision" id="f_decision"></select></div>
+        <div><label>Porteur</label><input name="porteur" id="f_porteur" list="people"></div>
+        <div><label>Relecteur</label><input name="relecteur" id="f_relecteur" list="people"></div>
+        <div><label>Validateur</label><input name="validateur" id="f_validateur" list="people"></div>
+        <div><label>Échéance (jj/mm/aaaa)</label><input name="echeance" id="f_echeance" placeholder="jj/mm/aaaa"></div>
+        <div><label>Valeur (1-5)</label><input name="valeur" id="f_valeur" type="number" min="1" max="5"></div>
+        <div><label>Effort (1-5)</label><input name="effort" id="f_effort" type="number" min="1" max="5"></div>
+        <div class="full"><label>Commentaire</label><textarea name="commentaire" id="f_commentaire"></textarea></div>
+        <div class="actions full"><button type="submit" id="saveBtn">Enregistrer</button>
+          <button type="button" class="ghost" id="reset">Annuler</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Créer -->
+  <div id="paneCreate" class="card" hidden>
+    <h2>Créer un récit</h2>
+    <div class="sub">Le récit est ajouté à l'onglet Récits métier, prêt à être détaillé.</div>
+    <form id="createForm" class="grid">
+      <div><label>Domaine</label><input name="domaine" required></div>
+      <div><label>Rôle</label><input name="role" list="roles" required></div>
+      <div><label>Fonctionnalité</label><input name="fonctionnalite" required></div>
+      <div><label>Priorité</label><select name="priorite" id="c_priorite"></select></div>
+      <div class="full"><label>Récit (En tant que…, je veux…, afin de…)</label><textarea name="recit" required></textarea></div>
+      <div class="full"><label>Bénéfice</label><textarea name="benefice"></textarea></div>
+      <div class="full"><label>Critères d'acceptation (séparés par « ; »)</label><textarea name="criteres"></textarea></div>
+      <div><label>Statut métier</label><select name="statut_metier" id="c_statut"></select></div>
+      <div><label>Porteur</label><input name="porteur" list="people"></div>
+      <div><label>Validateur</label><input name="validateur" list="people"></div>
+      <div><label>Valeur (1-5)</label><input name="valeur" type="number" min="1" max="5"></div>
+      <div><label>Effort (1-5)</label><input name="effort" type="number" min="1" max="5"></div>
+      <div class="actions full"><button type="submit">Créer le récit</button></div>
+    </form>
+  </div>
+
+  <!-- Demande -->
+  <div id="paneDemande" class="card" hidden>
+    <h2>Nouvelle demande</h2>
+    <div class="sub">Un besoin exprimé par le métier, ajouté à l'onglet Demandes.</div>
+    <form id="demandeForm" class="grid">
+      <div><label>Demandeur</label><input name="demandeur" list="people" required></div>
+      <div><label>Priorité</label><select name="priorite" id="d_priorite"></select></div>
+      <div class="full"><label>Besoin</label><textarea name="besoin" required></textarea></div>
+      <div class="full"><label>Récit proposé</label><input name="recit"></div>
+      <div class="full"><label>Impact attendu</label><textarea name="impact"></textarea></div>
+      <div class="full"><label>Commentaire</label><textarea name="commentaire"></textarea></div>
+      <div class="actions full"><button type="submit">Envoyer la demande</button></div>
+    </form>
+  </div>
+</div>
+<datalist id="people"></datalist>
+<datalist id="roles">
+  <option value="gérante"></option><option value="réception"></option>
+  <option value="praticienne"></option><option value="technicien"></option>
+</datalist>
+<div class="toast" id="toast"></div>
+
+<script>
+var MODE = "<?= mode ?>";
+var DATA = { recits: [], referentiels: {} }, CURRENT = null;
+var $ = function (s) { return document.querySelector(s); };
+
+function run(fn, arg) {
+  return new Promise(function (resolve, reject) {
+    var runner = google.script.run.withSuccessHandler(resolve).withFailureHandler(function (e) { reject(e); });
+    runner[fn](arg);
+  });
+}
+function toast(message) {
+  var t = $("#toast"); t.textContent = message; t.classList.add("on");
+  setTimeout(function () { t.classList.remove("on"); }, 2200);
+}
+function fill(selector, values, keep) {
+  var el = $(selector); el.innerHTML = "";
+  (values || []).forEach(function (v) {
+    var o = document.createElement("option"); o.value = v; o.textContent = v || "—"; el.appendChild(o);
+  });
+  if (keep !== undefined) el.value = keep;
+}
+function setTab(name) {
+  document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("active", t.dataset.tab === name); });
+  $("#paneRecit").hidden = name !== "recit";
+  $("#paneCreate").hidden = name !== "create";
+  $("#paneDemande").hidden = name !== "demande";
+}
+function renderList(filter) {
+  var box = $("#list"); box.innerHTML = "";
+  var f = (filter || "").toLowerCase();
+  DATA.recits.filter(function (r) {
+    return !f || r.id.toLowerCase().indexOf(f) >= 0 ||
+      (r.recit || "").toLowerCase().indexOf(f) >= 0 || (r.domaine || "").toLowerCase().indexOf(f) >= 0;
+  }).forEach(function (r) {
+    var d = document.createElement("div");
+    d.className = "item" + (CURRENT && CURRENT.id === r.id ? " active" : "");
+    d.innerHTML = '<div class="id">' + r.id + " · " + r.domaine + '</div><div class="t">' + (r.recit || "").slice(0, 60) + "</div>";
+    d.onclick = function () { selectRecit(r); };
+    box.appendChild(d);
+  });
+}
+function selectRecit(r) {
+  CURRENT = r;
+  $("#rTitle").textContent = r.id;
+  $("#rSub").textContent = (r.domaine || "") + " · " + (r.role || "");
+  $("#rMeta").innerHTML = "Avancement : <span class='pill'>" + (r.avancement || "—") + "</span>";
+  var f = $("#recitForm"); f.hidden = false;
+  f.priorite.value = r.priorite || ""; f.statut_metier.value = r.statut_metier || "";
+  f.decision.value = r.decision || ""; f.porteur.value = r.porteur || "";
+  f.relecteur.value = r.relecteur || ""; f.validateur.value = r.validateur || "";
+  f.echeance.value = r.echeance || ""; f.commentaire.value = r.commentaire || "";
+  f.valeur.value = r.valeur || ""; f.effort.value = r.effort || "";
+  renderList($("#search").value);
+}
+function populate() {
+  var ref = DATA.referentiels || {};
+  fill("#f_priorite", ref["Priorité"]); fill("#f_statut", ref["Statut métier"]);
+  fill("#f_decision", ref["Décision"]); fill("#c_priorite", ref["Priorité"]);
+  fill("#c_statut", ref["Statut métier"]); fill("#d_priorite", ref["Priorité"]);
+  var dl = $("#people"); dl.innerHTML = "";
+  (ref["Personne"] || []).forEach(function (p) {
+    var o = document.createElement("option"); o.value = p; dl.appendChild(o);
+  });
+  renderList("");
+}
+function load() {
+  run("getData").then(function (data) { DATA = data; populate(); }).catch(function (e) { toast(e.message || "Erreur"); });
+}
+
+$("#search").oninput = function (e) { renderList(e.target.value); };
+document.querySelectorAll(".tab").forEach(function (t) { t.onclick = function () { setTab(t.dataset.tab); }; });
+
+$("#recitForm").onsubmit = function (e) {
+  e.preventDefault(); if (!CURRENT) return;
+  var body = { id: CURRENT.id };
+  new FormData(e.target).forEach(function (v, k) { body[k] = v; });
+  $("#saveBtn").disabled = true;
+  run("saveRecit", body).then(function () {
+    toast("Récit enregistré"); $("#saveBtn").disabled = false; load();
+  }).catch(function (err) { toast(err.message || "Erreur"); $("#saveBtn").disabled = false; });
+};
+$("#reset").onclick = function () { if (CURRENT) selectRecit(CURRENT); };
+$("#createForm").onsubmit = function (e) {
+  e.preventDefault();
+  var body = {}; new FormData(e.target).forEach(function (v, k) { body[k] = v; });
+  run("createRecit", body).then(function (out) {
+    toast("Récit " + out.id + " créé"); e.target.reset(); load();
+  }).catch(function (err) { toast(err.message || "Erreur"); });
+};
+$("#demandeForm").onsubmit = function (e) {
+  e.preventDefault();
+  var body = {}; new FormData(e.target).forEach(function (v, k) { body[k] = v; });
+  run("addDemande", body).then(function (out) {
+    toast("Demande " + out.id + " envoyée"); e.target.reset();
+  }).catch(function (err) { toast(err.message || "Erreur"); });
+};
+
+setTab(MODE || "recit");
+load();
+</script>
+</body>
+</html>

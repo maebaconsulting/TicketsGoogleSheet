@@ -1,0 +1,352 @@
+[
+  {
+    "id": "REC-01",
+    "domaine": "Identité",
+    "role": "gérante",
+    "fonctionnalite": "Une allure de maison de luxe",
+    "recit": "En tant que gérante, je veux que lama et les documents de l'institut aient une allure sobre et haut de gamme, afin que la cliente perçoive une maison de beauté de luxe.",
+    "benefice": "Image de marque, fidélisation d'une clientèle aisée.",
+    "criteres": "Charte appliquée à tous les écrans ; typographie et couleurs de la charte ; aucune couleur hors palette.",
+    "plans": ["SP1", "LAMA"]
+  },
+  {
+    "id": "REC-02",
+    "domaine": "Identité",
+    "role": "gérante",
+    "fonctionnalite": "Marque à l'écran réglable",
+    "recit": "En tant que gérante, je veux choisir d'afficher le signe avec le mot lama ou le signe seul, afin d'adapter la marque à l'écran d'accueil de l'institut.",
+    "benefice": "Contrôle de l'identité visible au comptoir.",
+    "criteres": "Réglage « Logo et nom » ou « Logo seul » ; le choix se voit dès l'écran de connexion.",
+    "plans": ["LAMA"]
+  },
+  {
+    "id": "REC-03",
+    "domaine": "Bilinguisme",
+    "role": "réception",
+    "fonctionnalite": "Travailler en français ou en anglais",
+    "recit": "En tant que membre de l'équipe, je veux utiliser l'application dans ma langue et basculer à tout moment, afin de travailler sans effort dans les deux langues officielles.",
+    "benefice": "Confort de toute l'équipe, y compris anglophone.",
+    "criteres": "Bascule FR/EN immédiate sans rechargement ; langue propre à chaque compte ; messages serveur traduits.",
+    "plans": ["GEN", "SP3"]
+  },
+  {
+    "id": "REC-04",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Voir l'agenda du jour par praticienne",
+    "recit": "En tant que réceptionniste, je veux voir la journée en colonnes par praticienne, afin d'organiser les rendez-vous et les arrivées d'un coup d'œil.",
+    "benefice": "Journée fluide, moins d'attente pour la cliente.",
+    "criteres": "Grille par praticienne sur grand écran ; une praticienne à la fois au téléphone ; ligne de l'heure actuelle.",
+    "plans": ["SP4-V2"]
+  },
+  {
+    "id": "REC-05",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Prendre un rendez-vous",
+    "recit": "En tant que réceptionniste, je veux créer un rendez-vous avec une ou plusieurs prestations et l'affecter à une praticienne, afin de réserver le bon créneau.",
+    "benefice": "Prise de rendez-vous rapide et fiable.",
+    "criteres": "Choix de la cliente, des prestations et de la praticienne ; durée calculée ; refus clair en cas de conflit.",
+    "plans": ["SP4-V2"]
+  },
+  {
+    "id": "REC-06",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Déplacer un rendez-vous",
+    "recit": "En tant que réceptionniste, je veux déplacer un rendez-vous ou changer sa praticienne, afin de m'adapter aux imprévus sans perdre l'historique.",
+    "benefice": "Réactivité au comptoir.",
+    "criteres": "Durée conservée quand seule l'heure change ; contrôle des conflits ; confirmation visible.",
+    "plans": ["SP4-V2"]
+  },
+  {
+    "id": "REC-07",
+    "domaine": "Agenda",
+    "role": "praticienne",
+    "fonctionnalite": "Ma journée",
+    "recit": "En tant que praticienne, je veux voir mon prochain rendez-vous puis toute ma journée, afin de savoir immédiatement quoi préparer.",
+    "benefice": "Moins de questions à la réception, meilleure préparation.",
+    "criteres": "Prochain rendez-vous mis en avant ; détails utiles ; liste de la journée.",
+    "plans": ["SP4-V3"]
+  },
+  {
+    "id": "REC-08",
+    "domaine": "Agenda",
+    "role": "réception",
+    "fonctionnalite": "Bloquer un créneau",
+    "recit": "En tant que réceptionniste, je veux bloquer un créneau pour une pause ou une absence, afin qu'aucun rendez-vous ne s'y ajoute par erreur.",
+    "benefice": "Planning réaliste, pas de double réservation.",
+    "criteres": "Blocage d'une plage ; refus explicite en cas de rendez-vous en conflit ; possibilité de forcer après acceptation.",
+    "plans": ["SP4-V2"]
+  },
+  {
+    "id": "REC-09",
+    "domaine": "Clientèle",
+    "role": "réception",
+    "fonctionnalite": "Fiche cliente complète",
+    "recit": "En tant que réceptionniste, je veux une fiche cliente avec coordonnées, historique et notes, afin de personnaliser l'accueil et garder la mémoire de chaque cliente.",
+    "benefice": "Relation cliente soignée, continuité du service.",
+    "criteres": "Dernière visite et nombre de visites ; historique des rendez-vous ; notes ; refus de suppression si historique.",
+    "plans": ["SP4-V4"]
+  },
+  {
+    "id": "REC-10",
+    "domaine": "Clientèle",
+    "role": "réception",
+    "fonctionnalite": "Recherche sans accents",
+    "recit": "En tant que réceptionniste, je veux retrouver une cliente ou un produit même en tapant sans accent, afin de ne pas perdre de temps au comptoir.",
+    "benefice": "Recherche tolérante, gain de temps.",
+    "criteres": "Recherche insensible aux accents et à la casse ; résultats immédiats.",
+    "plans": ["SP4-V4"]
+  },
+  {
+    "id": "REC-11",
+    "domaine": "Prestations et stocks",
+    "role": "gérante",
+    "fonctionnalite": "Gérer prestations, produits et équipe",
+    "recit": "En tant que gérante, je veux gérer les prestations, les produits et l'équipe, afin de tenir l'offre et le stock à jour sans outil externe.",
+    "benefice": "Autonomie de gestion, catalogue fiable.",
+    "criteres": "Liste et fiche de chaque élément ; prix et durées ; stock des produits ; désactivation plutôt que suppression.",
+    "plans": ["SP4-V4"]
+  },
+  {
+    "id": "REC-12",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Encaisser une vente",
+    "recit": "En tant que réceptionniste, je veux encaisser un rendez-vous ou une vente de comptoir, éventuellement en plusieurs versements, afin de clôturer la visite de la cliente.",
+    "benefice": "Encaissement rapide et exact, journée bouclée.",
+    "criteres": "Calculatrice et montants rapides ; monnaie rendue ; plusieurs moyens de paiement ; facture numérotée sans trou.",
+    "plans": ["SP5-V1"]
+  },
+  {
+    "id": "REC-13",
+    "domaine": "Encaissement",
+    "role": "réception",
+    "fonctionnalite": "Remise et pourboire",
+    "recit": "En tant que réceptionniste, je veux appliquer une remise et enregistrer un pourboire, afin de refléter la réalité du comptoir.",
+    "benefice": "Souplesse commerciale, rémunération des praticiennes.",
+    "criteres": "Remise motivée ; accord d'une gérante au-delà du plafond ; pourboire hors facture.",
+    "plans": ["SP5-V1"]
+  },
+  {
+    "id": "REC-14",
+    "domaine": "Encaissement",
+    "role": "praticienne",
+    "fonctionnalite": "Encaisser ses propres rendez-vous",
+    "recit": "En tant que praticienne, je veux encaisser mes propres rendez-vous quand la gérante l'autorise, afin de ne pas attendre la réception.",
+    "benefice": "Fluidité en heure de pointe.",
+    "criteres": "Fonction réglable par la gérante ; limitée à ses propres rendez-vous ; sans remise.",
+    "plans": ["SP5-V3A"]
+  },
+  {
+    "id": "REC-15",
+    "domaine": "Facturation",
+    "role": "gérante",
+    "fonctionnalite": "Régler la fiscalité de la caisse",
+    "recit": "En tant que gérante, je veux régler le NIU, le RCCM, la TVA et les mentions légales, afin que chaque facture soit conforme.",
+    "benefice": "Conformité fiscale, sérénité.",
+    "criteres": "Rubrique Caisse des Réglages ; valeurs figées sur la facture à l'émission ; journal des changements.",
+    "plans": ["SP5-V2"]
+  },
+  {
+    "id": "REC-16",
+    "domaine": "Facturation",
+    "role": "réception",
+    "fonctionnalite": "Imprimer ou télécharger le ticket",
+    "recit": "En tant que réceptionniste, je veux imprimer ou télécharger le ticket PDF de 80 mm, afin de remettre une facture à la cliente.",
+    "benefice": "Preuve d'achat, image professionnelle.",
+    "criteres": "Ticket 80 mm avec logo et mentions ; identique pour la facture, l'avoir et le reçu ; disponible après l'émission.",
+    "plans": ["SP5-V2"]
+  },
+  {
+    "id": "REC-17",
+    "domaine": "Avoirs",
+    "role": "gérante",
+    "fonctionnalite": "Corriger une facture par un avoir",
+    "recit": "En tant que gérante, je veux corriger ou rembourser une facture par un avoir, afin de garder des comptes justes sans modifier la facture d'origine.",
+    "benefice": "Comptabilité fiable, geste commercial maîtrisé.",
+    "criteres": "Avoir total ou partiel par lignes ; motif obligatoire ; remboursement par un ou plusieurs moyens ; produits remis en stock.",
+    "plans": ["SP5-V3A"]
+  },
+  {
+    "id": "REC-18",
+    "domaine": "Acomptes",
+    "role": "réception",
+    "fonctionnalite": "Encaisser un acompte",
+    "recit": "En tant que réceptionniste, je veux encaisser un acompte sur un rendez-vous à venir, afin de sécuriser la réservation.",
+    "benefice": "Moins de rendez-vous non honorés.",
+    "criteres": "Reçu AC numéroté ; acompte déduit à l'encaissement ; remboursé ou gardé si annulation.",
+    "plans": ["SP5-V3B"]
+  },
+  {
+    "id": "REC-19",
+    "domaine": "Clôture",
+    "role": "gérante",
+    "fonctionnalite": "Clôturer la caisse du soir",
+    "recit": "En tant que gérante, je veux clôturer la caisse chaque soir et comparer les espèces comptées, afin de contrôler la recette et détecter les écarts.",
+    "benefice": "Contrôle quotidien, confiance.",
+    "criteres": "Totaux par moyen de paiement ; factures et avoirs ; pourboires dus ; écart d'espèces ; ticket de clôture.",
+    "plans": ["SP5-V3A"]
+  },
+  {
+    "id": "REC-20",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Confirmation de rendez-vous",
+    "recit": "En tant que réceptionniste, je veux que la confirmation du rendez-vous parte automatiquement par WhatsApp, afin de rassurer la cliente sans appel.",
+    "benefice": "Moins d'appels, moins d'oublis.",
+    "criteres": "Message à la prise et au déplacement ; dans la langue de la cliente ; fenêtre de silence respectée.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-21",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Rappel automatique",
+    "recit": "En tant que réceptionniste, je veux qu'un rappel parte avant le rendez-vous, afin de réduire les absences.",
+    "benefice": "Meilleur taux de présence.",
+    "criteres": "Délai réglable ; heure d'envoi choisie ; message personnalisable par la gérante.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-22",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Message libre",
+    "recit": "En tant que réceptionniste, je veux envoyer un message libre à une cliente depuis sa fiche, afin de répondre à une demande ponctuelle.",
+    "benefice": "Contact direct et chaleureux.",
+    "criteres": "Envoi depuis la fiche cliente ; numéro normalisé ; refus clair si numéro invalide.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-23",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Envoyer ticket, avoir et reçu par WhatsApp",
+    "recit": "En tant que réceptionniste, je veux envoyer le ticket, l'avoir ou le reçu d'acompte par WhatsApp, afin que la cliente reçoive son justificatif sans impression.",
+    "benefice": "Écologie, rapidité, préférence cliente.",
+    "criteres": "PDF produit à l'envoi ; bouton depuis la facture et à l'encaissement ; secours téléchargement si échec.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-24",
+    "domaine": "WhatsApp",
+    "role": "gérante",
+    "fonctionnalite": "Connecter le téléphone et régler les textes",
+    "recit": "En tant que gérante, je veux connecter le téléphone de l'institut par QR code et modifier les textes, afin de tout régler sans technicien.",
+    "benefice": "Autonomie, pas de dépendance externe.",
+    "criteres": "QR code relayé par lama ; textes et heures modifiables ; alerte quand la session tombe.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-25",
+    "domaine": "WhatsApp",
+    "role": "réception",
+    "fonctionnalite": "Secours un clic",
+    "recit": "En tant que réceptionniste, je veux voir les messages qui ne sont pas partis et les envoyer à la main, afin qu'aucune cliente ne soit oubliée.",
+    "benefice": "Aucun message perdu, même sans internet.",
+    "criteres": "Liste « À envoyer à la main » ; lien « Ouvrir WhatsApp » ; marquer comme envoyé ou ignorer.",
+    "plans": ["SP7-V1"]
+  },
+  {
+    "id": "REC-26",
+    "domaine": "Accueil",
+    "role": "gérante",
+    "fonctionnalite": "Chiffres de la journée et de la semaine",
+    "recit": "En tant que gérante, je veux voir les chiffres clés du jour et de la semaine, afin de piloter l'activité en un coup d'œil.",
+    "benefice": "Pilotage immédiat.",
+    "criteres": "Recette et compteurs du jour ; chiffres de la semaine ; écran adapté au rôle.",
+    "plans": ["SP4-V3"]
+  },
+  {
+    "id": "REC-27",
+    "domaine": "Accueil",
+    "role": "réception",
+    "fonctionnalite": "Liste du jour avec le geste suivant",
+    "recit": "En tant que réceptionniste, je veux la liste des rendez-vous du jour avec l'action suivante, afin d'avancer sans chercher.",
+    "benefice": "Journée guidée, moins d'erreurs.",
+    "criteres": "Statut en évidence ; geste suivant en gros bouton ; signal « à encaisser ».",
+    "plans": ["SP4-V3"]
+  },
+  {
+    "id": "REC-28",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Comptes par rôle et postes partagés",
+    "recit": "En tant que gérante, je veux des comptes par rôle et des postes partagés protégés par un PIN, afin que chacun ait les bons droits.",
+    "benefice": "Sécurité et clarté des responsabilités.",
+    "criteres": "Quatre rôles ; poste partagé avec PIN ; droits vérifiés côté serveur.",
+    "plans": ["SP2A", "SP2B"]
+  },
+  {
+    "id": "REC-29",
+    "domaine": "Comptes et sécurité",
+    "role": "gérante",
+    "fonctionnalite": "Journal des accès",
+    "recit": "En tant que gérante, je veux consulter le journal des accès et des actions, afin de savoir qui a fait quoi.",
+    "benefice": "Traçabilité, confiance.",
+    "criteres": "Journal consultable et filtrable ; actions sensibles inscrites.",
+    "plans": ["SP2B"]
+  },
+  {
+    "id": "REC-30",
+    "domaine": "Exploitation",
+    "role": "gérante",
+    "fonctionnalite": "Sauvegardes chiffrées",
+    "recit": "En tant que gérante, je veux des sauvegardes chiffrées automatiques sur clé USB et Google Drive, afin de ne jamais perdre les données de l'institut.",
+    "benefice": "Sécurité des données.",
+    "criteres": "Sauvegarde nocturne ; chiffrée ; restauration possible ; alerte en cas d'échec.",
+    "plans": ["SP2A", "SP2B"]
+  },
+  {
+    "id": "REC-31",
+    "domaine": "Exploitation",
+    "role": "gérante",
+    "fonctionnalite": "Installer et mettre à jour le serveur",
+    "recit": "En tant que gérante, je veux installer l'application sur un mini-PC qui redémarre seul et se met à jour, afin de ne plus dépendre d'un technicien.",
+    "benefice": "Autonomie totale de l'institut.",
+    "criteres": "Installation guidée ; démarrage automatique ; mise à jour et restauration en ligne de commande documentées.",
+    "plans": ["SP2B"]
+  },
+  {
+    "id": "REC-32",
+    "domaine": "Exploitation",
+    "role": "réception",
+    "fonctionnalite": "Travailler sans internet",
+    "recit": "En tant que réceptionniste, je veux continuer à prendre des rendez-vous et à encaisser même sans internet, afin que la journée ne s'arrête jamais.",
+    "benefice": "Continuité de service.",
+    "criteres": "Serveur local dans l'institut ; agenda et caisse disponibles hors ligne ; envois WhatsApp mis en attente.",
+    "plans": ["SP2A", "SP5-V1", "SP7-V1"]
+  },
+  {
+    "id": "REC-33",
+    "domaine": "Réglages",
+    "role": "gérante",
+    "fonctionnalite": "Régler l'institut",
+    "recit": "En tant que gérante, je veux régler les coordonnées de l'institut, les fonctions, les moyens de paiement et les comptes, afin d'adapter l'outil à l'institut.",
+    "benefice": "Paramétrage sans technicien.",
+    "criteres": "Rubriques des Réglages ; coordonnées reprises sur les tickets ; droits selon le rôle.",
+    "plans": ["SP4-V5", "SP5-V2"]
+  },
+  {
+    "id": "REC-34",
+    "domaine": "Réglages",
+    "role": "réception",
+    "fonctionnalite": "Mon compte",
+    "recit": "En tant que membre de l'équipe, je veux changer ma langue et mon thème, afin que l'application me ressemble.",
+    "benefice": "Confort personnel.",
+    "criteres": "Langue et thème clair ou sombre par compte ; appliqué sans rechargement.",
+    "plans": ["SP4-V1", "SP4-V5"]
+  },
+  {
+    "id": "REC-35",
+    "domaine": "Clientèle",
+    "role": "réception",
+    "fonctionnalite": "Suivre les factures d'une cliente",
+    "recit": "En tant que réceptionniste, je veux voir les factures et avoirs d'une cliente depuis sa fiche, afin de répondre à une question de compte sans chercher.",
+    "benefice": "Service client réactif.",
+    "criteres": "Liste des factures et avoirs ; ouverture depuis le rendez-vous ; montants et dates.",
+    "plans": ["SP5-V3A"]
+  }
+]
