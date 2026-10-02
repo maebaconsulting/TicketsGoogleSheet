@@ -23,6 +23,7 @@ CONFIG_FILE = TOOL_DIR / "config.json"
 
 DEFAULTS = {
     "source_repo": ".",
+    "convention": "plans",
     "plans_dir": "docs/superpowers/plans",
     "specs_dir": "docs/superpowers/specs",
     "decisions_path": "docs/superpowers/DECISIONS.md",
@@ -41,6 +42,7 @@ DEFAULTS = {
 
 ENV_MAP = {
     "source_repo": "SOURCE_REPO",
+    "convention": "CONVENTION",
     "plans_dir": "PLANS_DIR",
     "specs_dir": "SPECS_DIR",
     "decisions_path": "DECISIONS_PATH",

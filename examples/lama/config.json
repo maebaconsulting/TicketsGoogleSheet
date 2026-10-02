@@ -1,5 +1,6 @@
 {
   "source_repo": "../OCP/appgestion/OpenSalon",
+  "convention": "plans",
   "plans_dir": "docs/superpowers/plans",
   "specs_dir": "docs/superpowers/specs",
   "decisions_path": "docs/superpowers/DECISIONS.md",

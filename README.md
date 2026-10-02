@@ -91,6 +91,7 @@ Le script lié est créé et déployé ; recharger le classeur fait apparaître 
 
 ```
 config.py               configuration
+new_project.py          amorçage sur un nouveau projet (détection de convention)
 parser.py               dépôt -> tickets.json + exports
 sheets.py               habillage et remplissage du classeur
 sync_back.py            classeur -> backlog.json + DECISIONS.md
@@ -106,6 +107,46 @@ apps-script/            Code.gs, Formulaire.html, appsscript.json
 examples/lama/          jeu de données et config d'exemple
 mapping.md              schéma, correspondances et modes d'emploi
 ```
+
+## Intégrations (gstack, GSD, Matt Pocock)
+
+Le parser lit une **convention** configurable (`convention`) et l'agent
+`backlog-architect` sert de pont universel pour ce qui n'est pas structuré.
+
+| Outil | Où sont les artefacts | `convention` | `plans_dir` |
+|---|---|---|---|
+| plans/specs maison (OpenSalon) | `docs/superpowers/plans`, `specs` | `plans` | `docs/superpowers/plans` |
+| GSD (`/gsd-*`) | `.planning/ROADMAP.md`, `phases/**/*-PLAN.md` (`<task>`) | `gsd` | `.planning` |
+| Matt Pocock (tickets Markdown locaux) | `.scratch/<feature>/issues/NN-*.md` | `tickets` | `.scratch` |
+| Matt Pocock (GitHub/GitLab) | issues du dépôt | `agent` | — |
+| gstack (`/spec`, `/plan-*`, `/autoplan`) | plans libres, issues | `agent` | — |
+
+- **`plans`** : chaque `### Tâche` d'un plan devient un ticket ; le statut vient du
+  sujet de commit retrouvé dans git (fait / en cours / à faire).
+- **`gsd`** : chaque `*-PLAN.md` devient un epic, chaque `<task>` un ticket ; le
+  statut vient de la présence d'un `*-SUMMARY.md`.
+- **`tickets`** : chaque dossier `.scratch/<feature>` devient un epic, chaque
+  fichier d'issue un ticket ; le statut vient de la ligne `Status:` (`resolved`,
+  `claimed`).
+- **`agent`** : aucun ticket déduit des plans ; l'agent `backlog-architect` analyse
+  le code et écrit `generated/stories.generated.json`, chargé dans l'onglet Récits.
+
+Pour un tracker GitHub/GitLab (Matt Pocock ou gstack), reliez les tickets créés à
+leurs issues par `issue-map.csv` (`id,github,gitlab`) : `sync_back.py` génère alors
+`issues-sync.sh` pour aligner labels et statuts.
+
+### Démarrer sur un nouveau projet
+
+```bash
+python3 new_project.py --source ../mon-projet --sheet <id_du_classeur> \
+  --credentials key.json --product "Mon Backlog"
+# détecte la convention (.planning, .scratch, docs/superpowers ou agent),
+# écrit config.json, puis :
+.venv/bin/python parser.py && .venv/bin/python sheets.py
+```
+
+Options : `--convention plans|gsd|tickets|agent`, `--github`, `--gitlab`,
+`--force`, `--run`.
 
 ## Exemple lama
 

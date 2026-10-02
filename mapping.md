@@ -1,10 +1,15 @@
 # Export des tickets
 
-Les tickets du projet ne vivent pas dans un tracker : ce sont les tâches des plans
-de mise en œuvre de `docs/superpowers/plans/`. Ce dossier les lit, en fait un pivot
-commun, puis les décline vers GitHub, GitLab et une Google Sheet.
+Les tickets du projet sont lus dans les artefacts du dépôt (plans, phases, tickets),
+transformés en un pivot commun, puis déclinés vers GitHub, GitLab et une Google Sheet.
+La **convention** est configurable (`convention`) et détectée par `new_project.py` :
 
-## Sources
+- `plans` : `docs/superpowers/plans/*.md` (« ### Tâche N ») ;
+- `gsd` : `.planning/` (ROADMAP, `phases/**/*-PLAN.md` avec `<task>`) ;
+- `tickets` : `.scratch/<feature>/issues/NN-*.md` ;
+- `agent` : aucun plan ; récits générés par l'agent `backlog-architect`.
+
+## Sources (convention `plans`)
 
 - `docs/superpowers/specs/*.md` : conception, un document par sous-projet, dit « fait foi ».
 - `docs/superpowers/plans/*.md` : un plan par sous-projet et par vague ; chaque plan

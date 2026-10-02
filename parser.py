@@ -305,6 +305,134 @@ def write_csv(path: Path, columns: list[str], rows: list[list]) -> None:
         writer.writerows([[clean(c) for c in row] for row in rows])
 
 
+# --- Adaptateurs de conventions ------------------------------------------------
+# Chaque adaptateur renvoie des plans (epics) au même format que parse_plan, pour
+# que l'aval (statuts, exports, classeur) soit identique quelle que soit la source :
+#   plans   : docs/superpowers/plans/*.md (convention OpenSalon, « ### Tâche N »)
+#   gsd     : .planning/phases/**/*-PLAN.md (balises <task>)
+#   tickets : .scratch/<feature>/issues/NN-*.md (un fichier par ticket)
+#   agent   : aucun plan ; seuls les récits générés par l'agent sont utilisés.
+
+
+def slugify(text: str) -> str:
+    text = re.sub(r"[^0-9A-Za-z]+", "-", text).strip("-").upper()
+    return text or "X"
+
+
+def empty_plan(fichier: str, titre: str, code: str, sous_projet="", vague="",
+               branche="", spec="", specs=None) -> dict:
+    return {
+        "fichier": fichier, "titre": titre, "code": code,
+        "sous_projet": sous_projet, "vague": vague, "branche": branche,
+        "objectif": "", "architecture": "", "tech": "", "spec": spec,
+        "specs": specs or [], "milestone": f"{code} - {titre}" if code else titre,
+        "remplace_par": [], "tasks": [],
+    }
+
+
+def empty_task(plan: dict, numero: int, titre: str, statut_hint="") -> dict:
+    return {
+        "plan_fichier": plan["fichier"], "plan_titre": plan["titre"],
+        "code": plan["code"], "sous_projet": plan["sous_projet"], "vague": plan["vague"],
+        "branche": plan["branche"], "numero": numero, "titre": titre,
+        "fichiers_creer": [], "fichiers_modifier": [], "tests": [],
+        "consomme": [], "produit": [], "etapes": [], "commit_subject": "",
+        "statut_hint": statut_hint, "corps_extrait": "",
+    }
+
+
+def discover_gsd(planning_dir: Path) -> list[dict]:
+    plans: list[dict] = []
+    if not planning_dir.exists():
+        return plans
+    for plan_file in sorted(planning_dir.rglob("*-PLAN.md")):
+        text = plan_file.read_text(encoding="utf-8")
+
+        rel = str(plan_file.relative_to(ROOT)) if plan_file.is_relative_to(ROOT) else str(plan_file)
+        front = re.search(r"\A---\s*\n(.*?)\n---", text, re.S)
+        phase = re.search(r"^phase:\s*(.+)$", front.group(1), re.M) if front else None
+        phase = phase.group(1).strip() if phase else plan_file.parent.name
+        goal = re.search(r"<objective>\s*(.*?)\s*</objective>", text, re.S)
+        title = goal.group(1).strip().splitlines()[0][:80] if goal else plan_file.stem
+        code = "GSD-" + slugify(str(phase))[:24]
+        plan = empty_plan(rel, title, code, sous_projet="GSD", vague=str(phase))
+        plan["objectif"] = goal.group(1).strip() if goal else ""
+        plan["spec"] = str((planning_dir / "ROADMAP.md").relative_to(ROOT)) if (planning_dir / "ROADMAP.md").exists() else ""
+        if plan["spec"]:
+            plan["specs"] = [plan["spec"]]
+        summary = plan_file.with_name(plan_file.name.replace("-PLAN.md", "-SUMMARY.md"))
+        hint = "fait" if summary.exists() else "à faire"
+        for index, task_html in enumerate(re.findall(r"<task\b[^>]*>(.*?)</task>", text, re.S), 1):
+            name = re.search(r"<name>\s*(.*?)\s*</name>", task_html, re.S)
+            label = re.sub(r"^Task\s+\d+\s*:\s*", "", name.group(1).strip()) if name else f"Tâche {index}"
+            task = empty_task(plan, index, label, statut_hint=hint)
+            files = re.search(r"<files>\s*(.*?)\s*</files>", task_html, re.S)
+            if files:
+                task["fichiers_modifier"] = [f.strip() for f in files.group(1).split(",") if f.strip()]
+            criteria = re.search(r"<acceptance_criteria>\s*(.*?)\s*</acceptance_criteria>", task_html, re.S)
+            if criteria:
+                task["etapes"] = [
+                    {"n": i, "libelle": line.strip("- ").strip(), "fait": False}
+                    for i, line in enumerate(criteria.group(1).strip().splitlines(), 1) if line.strip().startswith("-")
+                ]
+            task["corps_extrait"] = task_html.strip()
+            plan["tasks"].append(task)
+        if plan["tasks"]:
+            plans.append(plan)
+    return plans
+
+
+def discover_tickets(scratch_dir: Path) -> list[dict]:
+    plans: list[dict] = []
+    if not scratch_dir.exists():
+        return plans
+    for feature in sorted(p for p in scratch_dir.iterdir() if p.is_dir()):
+        issues_dir = feature / "issues"
+        issue_files = sorted(issues_dir.glob("*.md")) if issues_dir.exists() else []
+        spec = feature / "spec.md"
+        if not issue_files and not spec.exists():
+            continue
+        rel = str(feature.relative_to(ROOT)) if feature.is_relative_to(ROOT) else str(feature)
+        code = "MATT-" + slugify(feature.name)[:20]
+        plan = empty_plan(rel, feature.name, code, sous_projet="MATT", vague=feature.name)
+        if spec.exists():
+            plan["spec"] = str(spec.relative_to(ROOT)) if spec.is_relative_to(ROOT) else str(spec)
+            plan["specs"] = [plan["spec"]]
+
+        def add_issue(path: Path, numero: int) -> None:
+            text = path.read_text(encoding="utf-8")
+            heading = next((l[2:].strip() for l in text.splitlines() if l.startswith("# ")), path.stem)
+            status = re.search(r"^Status:\s*(.+)$", text, re.M | re.I)
+            value = status.group(1).strip().lower() if status else ""
+            hint = {"resolved": "fait", "done": "fait", "claimed": "en cours"}.get(value, "à faire")
+            task = empty_task(plan, numero, heading, statut_hint=hint)
+            task["etapes"] = [
+                {"n": i, "libelle": m.group(2).strip(), "fait": m.group(1).lower() == "x"}
+                for i, m in enumerate(re.finditer(r"^-\s*\[( |x|X)\]\s*(.+)$", text, re.M), 1)
+            ]
+            task["corps_extrait"] = text.strip()
+            plan["tasks"].append(task)
+
+        for index, path in enumerate(issue_files, 1):
+            add_issue(path, index)
+        if not plan["tasks"] and spec.exists():
+            add_issue(spec, 1)
+        if plan["tasks"]:
+            plans.append(plan)
+    return plans
+
+
+def discover_plans() -> list[dict]:
+    convention = CFG.get("convention", "plans")
+    if convention == "agent":
+        return []
+    if convention == "gsd":
+        return discover_gsd(PLANS_DIR)
+    if convention == "tickets":
+        return discover_tickets(PLANS_DIR)
+    return [parse_plan(p) for p in sorted(PLANS_DIR.glob("*.md"))]
+
+
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     BODIES_DIR.mkdir(parents=True, exist_ok=True)
@@ -327,14 +455,15 @@ def main() -> None:
     )
     existing = set(b.strip().lstrip("*+ ") for b in git("branch").splitlines() if b.strip())
 
-    plans = [parse_plan(p) for p in sorted(PLANS_DIR.glob("*.md"))]
+    plans = discover_plans()
 
     # Plans remplacés (détectés dans les en-têtes « Remplace le plan ... »).
     replaced: dict[str, str] = {}
-    for p in PLANS_DIR.glob("*.md"):
-        text = p.read_text(encoding="utf-8")
-        for old in SUPERSEDE_RE.findall(text):
-            replaced[old] = p.name
+    if CFG.get("convention", "plans") == "plans":
+        for p in PLANS_DIR.glob("*.md"):
+            text = p.read_text(encoding="utf-8")
+            for old in SUPERSEDE_RE.findall(text):
+                replaced[old] = p.name
     for plan in plans:
         name = Path(plan["fichier"]).name
         if name in replaced:
@@ -359,6 +488,8 @@ def main() -> None:
             elif subject and subject in subject_hash:
                 statut, source = "en cours", "commit"
                 commit_hash = subject_hash.get(subject, "")
+            elif task.get("statut_hint"):
+                statut, source = task["statut_hint"], "source externe"
             else:
                 statut, source = "", "indéterminé"
             task["statut"] = statut
