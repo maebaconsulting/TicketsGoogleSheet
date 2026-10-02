@@ -24,6 +24,8 @@ dans un classeur Google **configurable** (`spreadsheet_id` ou `sheet_name`).
   `gitlab-issues.sh`, PDF de revue.
 - **Agent** opencode `backlog-architect` pour générer les récits en analysant un codebase.
 
+Guide de démarrage complet, pas à pas : [GUIDE.md](GUIDE.md).
+
 ## Prérequis
 
 - Python 3.11+ ; un compte de service Google avec l'API **Google Sheets** et
